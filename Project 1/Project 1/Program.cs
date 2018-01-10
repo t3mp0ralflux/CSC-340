@@ -138,9 +138,59 @@ namespace Project_1
             }
             else
             {
-                return /*zero*/(results);
+                return zero();
             }
         }
+
+        public Matrix subtract(Matrix one, Matrix two, Matrix results)
+        {
+            int i;
+            int j;
+
+            if (one.numRows == two.numRows)
+            {
+                for (i = 0; i < one.numRows; i++)
+                {
+                    for (j = 0; j < one.data.Columns.Count; j++)
+                    {
+                        results.data.Rows[i][j] = Double.Parse(one.data.Rows[i][j].ToString()) - Double.Parse(two.data.Rows[i][j].ToString());
+                    }
+                }
+                return results;
+            }
+            else
+            {
+                return zero();
+            }
+        }
+
+        public Matrix zero()
+        {
+            Matrix Zero = new Matrix();
+            int i;
+            int j;
+            for (i = 0; i < numRows; i++)
+            {
+                for (j = 0; j < numCols; j++)
+                    data.Rows[i][j] = 0;
+            }
+            return Zero;
+        }
+
+        public Matrix identity()
+        {
+            Matrix res = new Matrix();
+            int i;
+            int j;
+            
+            for (i = 0; i < numRows; i++)
+            {
+                for (j = 0; j < numCols; j++)
+                    res.data.Rows[i][j] = 1;
+            }
+            return res;
+        }
+
 
         public static void Main()
         {
