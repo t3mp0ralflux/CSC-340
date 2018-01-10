@@ -7,3 +7,12 @@ E:\Drive\CSC340\Project 1\Project 1\obj\Debug\Project 1.pdb
 C:\Users\brent\Google Drive\CSC340\Project 1\Project 1\bin\Debug\Project 1.exe.config
 C:\Users\brent\Google Drive\CSC340\Project 1\Project 1\obj\Debug\Project 1.exe
 C:\Users\brent\Google Drive\CSC340\Project 1\Project 1\obj\Debug\Project 1.pdb
+C:\Users\brent\Google Drive\CSC340\CSC-340\Project 1\Project 1\bin\Debug\Project 1.exe.config
+C:\Users\brent\Google Drive\CSC340\CSC-340\Project 1\Project 1\obj\Debug\Project 1.exe
+C:\Users\brent\Google Drive\CSC340\CSC-340\Project 1\Project 1\obj\Debug\Project 1.pdb
+E:\Drive\CSC340\CSC-340\Project 1\Project 1\bin\Debug\Project 1.exe.config
+E:\Drive\CSC340\CSC-340\Project 1\Project 1\obj\Debug\Project 1.exe
+E:\Drive\CSC340\CSC-340\Project 1\Project 1\obj\Debug\Project 1.pdb
+E:\Drive\CSC340\CSC-340\Project 1\Project 1\obj\Debug\Project 1.csprojResolveAssemblyReference.cache
+E:\Drive\CSC340\CSC-340\Project 1\Project 1\bin\Debug\Project 1.exe
+E:\Drive\CSC340\CSC-340\Project 1\Project 1\bin\Debug\Project 1.pdb
