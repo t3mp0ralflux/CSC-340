@@ -166,29 +166,49 @@ namespace Project_1
 
         public Matrix zero()
         {
-            Matrix Zero = new Matrix();
-            int i;
-            int j;
-            for (i = 0; i < numRows; i++)
+            DataTable zero = new DataTable();
+            for (int col = 0; col < numCols; col++)
             {
-                for (j = 0; j < numCols; j++)
-                    data.Rows[i][j] = 0;
+                zero.Columns.Add(new DataColumn());
             }
-            return Zero;
+            for(int rows=0; rows<numRows; rows++)
+            {
+                zero.Rows.Add();
+            }
+            for(int i=0; i<numRows; i++)
+            {
+                for(int j=0; j<numCols; j++)
+                {
+                    zero.Rows[i][j] = 0;
+                }
+            }
+            Matrix res = new Matrix();
+            res.set_data(zero);
+            return res;
         }
 
         public Matrix identity()
         {
             Matrix res = new Matrix();
+            res = res.zero();
             int i;
-            int j;
             
             for (i = 0; i < numRows; i++)
             {
-                for (j = 0; j < numCols; j++)
-                    res.data.Rows[i][j] = 1;
+                    res.data.Rows[i][i] = 1;
             }
             return res;
+        }
+
+        public void scalar(int scale)
+        {
+            foreach(DataRow dr in data.Rows)
+            {
+                foreach(DataColumn dc in data.Columns)
+                {
+                    dr.SetField(dc, Convert.ToDouble(dr[dc]) * scale);
+                }
+            } 
         }
 
 
@@ -202,8 +222,8 @@ namespace Project_1
             two.importDataMatrix(filepath, 3);
             results.importDataMatrix(filepath, 0);
 
-            results.add(one, two, results);
-
+            // results.add(one, two, results);
+            one.scalar(2);
             results.print(results);
             Console.ReadKey();
         }
