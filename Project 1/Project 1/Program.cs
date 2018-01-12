@@ -129,7 +129,7 @@ namespace Project_1
             {
                 for (i = 0; i < one.numRows; i++)
                 {
-                    for (j = 0; j < one.data.Columns.Count; j++)
+                    for (j = 0; j < one.numCols; j++)
                     {
                         results.data.Rows[i][j] = Double.Parse(one.data.Rows[i][j].ToString()) + Double.Parse(two.data.Rows[i][j].ToString());
                     }
