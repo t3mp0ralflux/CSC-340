@@ -2,6 +2,7 @@
 using System.Data;
 using System.IO;
 using System.Text;
+using System.Math;
 
 namespace Project_1
 {
@@ -70,6 +71,18 @@ namespace Project_1
             }
             dataPrint = sb.ToString();
             return dataPrint;
+        }
+
+        public void createBlankMatrix(Matrix one, int rows, int columns)
+        {
+            for (int i= 0; i< columns; i++)
+            {
+                data.Columns.Add(new DataColumn());
+            }
+            for (int j=0; j < rows; j++)
+            {
+                data.NewRow();
+            }
         }
 
         public void importDataMatrix(string filepath, int startColumns)
@@ -211,6 +224,79 @@ namespace Project_1
             } 
         }
 
+        public Matrix transpose(Matrix one)
+        {
+            Matrix res = new Matrix();
+            for(int i=0; i< numRows; i++)
+            {
+                res.data.Columns.Add(new DataColumn());
+            }
+            for(int j=0; j<numCols; j++)
+            {
+                res.data.NewRow();
+            }
+            for(int i=0; i < numRows; i++)
+            {
+                for(int j=0; j<numCols; j++)
+                {
+                    res.data.Rows[i][j] = one.data.Rows[j][i]; 
+                }
+            }
+            res.set_numCols();
+            res.set_numRows();
+            return res;
+        }
+
+        public double trace(Matrix one)
+        {
+            double res = 0;
+            for(int i = 0; i < numRows; i++)
+            {
+                res += Double.Parse(one.data.Rows[i][i].ToString());
+            }
+            return res;
+        }
+
+        public double find_max(Matrix one)
+        {
+            double res = Math.Abs(Double.Parse(one.data.Rows[0][0].ToString()));
+            for(int i =0; i < numRows; i++)
+            {
+                for(int j=0; j < numCols; j++)
+                {
+                    if(Math.Abs(Double.Parse(one.data.Rows[i][j].ToString())) > res)
+                    {
+                        res = Math.Abs(Double.Parse(one.data.Rows[i][j].ToString()));
+                    }
+                }
+            }
+            return res;
+        }
+
+        public Matrix multiply(Matrix one, Matrix two, Matrix results)
+        {
+            if (one.numCols == two.numRows)
+            {
+                results.createBlankMatrix(results, one.numCols * two.numRows, one.numCols * two.numRows);
+
+                for(int i=0; i < one.numRows; i++)
+                {
+                    for(int j=0; j<two.numCols; j++)
+                    {
+                        for(int k=0; k < two.numRows; k++)
+                        {
+                            results.data.Rows[i][j] = (Double.Parse(one.data.Rows[i][k].ToString()) * (Double.Parse(two.data.Rows[k][j].ToString())));
+                        }
+                    }
+
+                }
+                return results;
+            }
+            else
+            {
+                return results.zero();
+            }
+        }
 
         public static void Main()
         {
