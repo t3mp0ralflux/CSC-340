@@ -26,3 +26,6 @@ E:\csc340\csc-340\Project 1\Project 1\bin\Debug\Project 1.exe.config
 E:\csc340\csc-340\Project 1\Project 1\obj\Debug\Project 1.exe
 E:\csc340\csc-340\Project 1\Project 1\obj\Debug\Project 1.pdb
 E:\csc340\csc-340\Project 1\Project 1\obj\Debug\Project 1.csprojResolveAssemblyReference.cache
+C:\Users\BelangerB\Desktop\melanie\CSC-340\Project 1\Project 1\bin\Debug\Project 1.exe
+C:\Users\BelangerB\Desktop\melanie\CSC-340\Project 1\Project 1\bin\Debug\Project 1.pdb
+C:\Users\BelangerB\Desktop\melanie\CSC-340\Project 1\Project 1\obj\Debug\Project 1.csprojResolveAssemblyReference.cache
