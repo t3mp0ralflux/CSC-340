@@ -5,315 +5,212 @@ using System.Text;
 
 namespace Project_1
 {
-    public class Matrix
+      public class Matrix
     {
-        public DataTable data = new DataTable();
-        public int numRows;
-        public int numCols;
-        public int[] size = new int[2];
+        public double[,] matrix;
 
-        public int get_cols()
+        public Matrix(double[,] values)
         {
-            return numCols;
+            matrix = values;
         }
 
-        public int get_rows()
+        public int getRows()
         {
-            return numRows;
+            return matrix.Length;
         }
 
-        public DataTable get_data()
+        public int getCols()
         {
-            return data;
+            return matrix.GetLength(0);
         }
 
-        public int[] get_size()
+        public double getVal(int i, int j)
         {
-            return size;
+            return matrix[i,j];
         }
 
-        public void set_size()
+        public Matrix scalar(double scalar)
         {
-            size[0] = numRows;
-            size[1] = numCols;
-        }
-
-
-        public void set_numRows()
-        {
-            numRows = data.Rows.Count;
-        }
-
-        public void set_numCols()
-        {
-            numCols = data.Columns.Count;
-        }
-        public void set_data(DataTable dt)
-        {
-            data = dt;
-        }
-
-        public void print_data()
-        // REDO ME
-
-        {
-            int i;
-            int j;
-
-            for (i = 0; i < data.Rows.Count; i++)
+            Matrix temp = new Matrix(matrix);
+            for (int i = 0; i < matrix.Length; i++)
             {
-                for (j = 0; j < data.Columns.Count; j++)
+                for (int j = 0; j < matrix.GetLength(0); j++)
                 {
-                    Console.Write("[" + data.Rows[i][j].ToString() + "]");
+                    temp.matrix[i,j] *= scalar;
                 }
-                Console.Write("\n");
             }
+            return temp;
         }
 
-        public void createBlankMatrix(Matrix one, int rows, int columns)
+        public Matrix multiply(Matrix other)
         {
-            for (int i= 0; i< columns; i++)
-            {
-                data.Columns.Add(new DataColumn());
-            }
-            for (int j=0; j < rows; j++)
-            {
-                data.NewRow();
-            }
-        }
+            if (other.getCols() != getRows())
+                return null;
 
-        public void importDataMatrix(string filepath, int startColumns)
-        {
-                
-            for (int col = 0; col < 2; col++)
-                {
-                    data.Columns.Add(new DataColumn());
-                }
-                string[] lines = File.ReadAllLines(filepath);
-
-            foreach (string line in lines)
+            double[,] c = new double[getRows(),other.getCols()];
+            for (int i = 0; i < getRows(); i++)
             {
-                var cols = line.Split('\t');
-                int f = 0;
-                DataRow dr = data.NewRow();
-                if (startColumns != 0)
+                for (int j = 0; j < other.getCols(); j++)
                 {
-                    for (int cIndex = startColumns - 1; cIndex < startColumns + 1; cIndex++)
+                    for (int k = 0; k < getCols(); k++)
                     {
-                     dr[f] = cols[cIndex];
-                        f++;
-                    }
-                    data.Rows.Add(dr);
-                }
-                else
-                {
-                    data.Rows.Add();
-                }
-            }
-            numCols = data.Columns.Count;
-            numRows = data.Rows.Count;
-            set_size();
-        }
-
-        public void print(Matrix one)
-        {
-            int i;
-            int j;
-
-            for (i = 0; i < one.numRows; i++)
-            {
-                for (j = 0; j < one.numCols; j++)
-                {
-                    Console.Write("[" + one.data.Rows[i][j].ToString() + "]");
-                }
-                Console.Write("\n");
-            }
-        }
-
-        public Matrix add(Matrix one, Matrix two, Matrix results)
-        {
-            int i;
-            int j;
-
-            if (one.numRows == two.numRows)
-            {
-                for (i = 0; i < one.numRows; i++)
-                {
-                    for (j = 0; j < one.numCols; j++)
-                    {
-                        results.data.Rows[i][j] = Double.Parse(one.data.Rows[i][j].ToString()) + Double.Parse(two.data.Rows[i][j].ToString());
-                    }
-                }
-                return results;
-            }
-            else
-            {
-                return zero();
-            }
-        }
-
-        public Matrix subtract(Matrix one, Matrix two, Matrix results)
-        {
-            int i;
-            int j;
-
-            if (one.numRows == two.numRows)
-            {
-                for (i = 0; i < one.numRows; i++)
-                {
-                    for (j = 0; j < one.data.Columns.Count; j++)
-                    {
-                        results.data.Rows[i][j] = Double.Parse(one.data.Rows[i][j].ToString()) - Double.Parse(two.data.Rows[i][j].ToString());
-                    }
-                }
-                return results;
-            }
-            else
-            {
-                return zero();
-            }
-        }
-
-        public Matrix zero()
-        {
-            DataTable zero = new DataTable();
-            for (int col = 0; col < numCols; col++)
-            {
-                zero.Columns.Add(new DataColumn());
-            }
-            for(int rows=0; rows<numRows; rows++)
-            {
-                zero.Rows.Add();
-            }
-            for(int i=0; i<numRows; i++)
-            {
-                for(int j=0; j<numCols; j++)
-                {
-                    zero.Rows[i][j] = 0;
-                }
-            }
-            Matrix res = new Matrix();
-            res.set_data(zero);
-            return res;
-        }
-
-        public Matrix identity()
-        {
-            Matrix res = new Matrix();
-            res = res.zero();
-            int i;
-            
-            for (i = 0; i < numRows; i++)
-            {
-                    res.data.Rows[i][i] = 1;
-            }
-            return res;
-        }
-
-        public void scalar(int scale)
-        {
-            foreach(DataRow dr in data.Rows)
-            {
-                foreach(DataColumn dc in data.Columns)
-                {
-                    dr.SetField(dc, Convert.ToDouble(dr[dc]) * scale);
-                }
-            } 
-        }
-
-        public Matrix transpose(Matrix one)
-        {
-            Matrix res = new Matrix();
-            for(int i=0; i< numRows; i++)
-            {
-                res.data.Columns.Add(new DataColumn());
-            }
-            for(int j=0; j<numCols; j++)
-            {
-                res.data.NewRow();
-            }
-            for(int i=0; i < numRows; i++)
-            {
-                for(int j=0; j<numCols; j++)
-                {
-                    res.data.Rows[i][j] = one.data.Rows[j][i]; 
-                }
-            }
-            res.set_numCols();
-            res.set_numRows();
-            return res;
-        }
-
-        public double trace(Matrix one)
-        {
-            double res = 0;
-            for(int i = 0; i < numRows; i++)
-            {
-                res += Double.Parse(one.data.Rows[i][i].ToString());
-            }
-            return res;
-        }
-
-        public double find_max(Matrix one)
-        {
-            double res = Math.Abs(Double.Parse(one.data.Rows[0][0].ToString()));
-            for(int i =0; i < numRows; i++)
-            {
-                for(int j=0; j < numCols; j++)
-                {
-                    if(Math.Abs(Double.Parse(one.data.Rows[i][j].ToString())) > res)
-                    {
-                        res = Math.Abs(Double.Parse(one.data.Rows[i][j].ToString()));
+                        c[i,j] = c[i,j] + (matrix[i,k] * other.getVal(k, j));
                     }
                 }
             }
-            return res;
+            Matrix temp = new Matrix(c);
+            return temp;
         }
 
-        public Matrix multiply(Matrix one, Matrix two, Matrix results)
+        public Matrix add(Matrix other)
         {
-            if (one.numCols == two.numRows)
+            if (getRows() != other.getRows() || getCols() != other.getCols())
             {
-                results.createBlankMatrix(results, one.numCols * two.numRows, one.numCols * two.numRows);
-
-                for(int i=0; i < one.numRows; i++)
+                return null;
+            }
+            double[,] temp = new double[getRows(),getCols()];
+            for (int i = 0; i < getRows(); i++)
+            {
+                for (int j = 0; j < getCols(); j++)
                 {
-                    for(int j=0; j<two.numCols; j++)
+                    temp[i,j] = matrix[i,j] + other.matrix[i,j];
+                }
+            }
+            return new Matrix(temp);
+        }
+
+        public Matrix subtract(Matrix other)
+        {
+            if (getRows() != other.getRows() || getCols() != other.getCols())
+            {
+                return null;
+            }
+            double[,] temp = new double[getRows(),getCols()];
+            for (int i = 0; i < getRows(); i++)
+            {
+                for (int j = 0; j < getCols(); j++)
+                {
+                    temp[i,j] = matrix[i,j] - other.matrix[i,j];
+                }
+            }
+            return new Matrix(temp);
+        }
+
+        public void printMatrix()
+        {
+            for (int i = 0; i < getRows(); i++)
+            {
+                Console.Write("[");
+                for (int j = 0; j < getCols(); j++)
+                {
+                    Console.Write(matrix[i,j] + ", ");
+                }
+                Console.Write("]");
+            }
+        }
+
+        public Matrix transpose()
+        {
+            double[,] temp = new double[getCols(),getRows()];
+            for (int i = 0; i < getRows(); i++)
+            {
+                for (int j = 0; j < getCols(); j++)
+                {
+                    temp[j,i] = matrix[i,j];
+                }
+            }
+            return new Matrix(temp);
+        }
+
+        public void interchange(int rowA, int rowB)
+        {
+            double[] temp = new double[getCols()];
+            for (int i = 0; i < getCols(); i++)
+            {
+                temp[i] = getVal(rowA, i);
+                matrix[rowA,i] = matrix[rowB,i];
+                matrix[rowB,i] = temp[i];
+            }
+        }
+
+        public double findDeterminant()
+        {
+            int p;
+            int r = 0;
+            double determinant = 0;
+
+            // augment current matrix with the values
+            Matrix C = new Matrix(matrix);
+
+            for (int j = 0; j < C.getRows(); j++)
+            {
+                p = j;
+
+                // loop through each row and find the pivot
+                for (int i = 0; i < C.getRows(); i++)
+                {
+
+                    // look at the absolute value of the pivot and see if it is larger than current pivot
+                    // if so, make that the new pivot
+                    if (Math.Abs(C.matrix[p,j]) < Math.Abs(C.matrix[i,j]))
                     {
-                        for(int k=0; k < two.numRows; k++)
+                        p = i;
+                    }
+                }
+
+                // interchange if the pivot is below row j
+                if (p > j)
+                {
+                    C.interchange(j, p);
+                    r++;
+                }
+
+                for (int i = 0; i < C.getRows(); i++)
+                {
+                    if (i > j)
+                    {
+                        double Cij = C.matrix[i,j];
+                        double Cjj = C.matrix[j,j];
+                        for (int k = 0; k < C.getCols(); k++)
                         {
-                            results.data.Rows[i][j] = (Double.Parse(one.data.Rows[i][k].ToString()) * (Double.Parse(two.data.Rows[k][j].ToString())));
+                            C.matrix[i,k] = C.matrix[i,k] - (C.matrix[j,k] * (Cij / Cjj));
                         }
                     }
-
                 }
-                return results;
+
             }
-            else
+
+            // initialize determinant to the value in C00
+            determinant = C.matrix[0,0];
+            // then multiply down the diagoanl
+            for (int i = 1; i < C.getRows(); i++)
             {
-                return results.zero();
+                determinant = determinant * C.matrix[i,i];
             }
+
+            // put the negative/positive sign if needed
+            determinant = determinant * Math.Pow((-1), r);
+
+            return determinant;
         }
 
-
-        public static void Main()
+        public double trace()
         {
-            string filepath = Directory.GetCurrentDirectory().ToString() + "\\2017 Fall Project 1 data.txt";
-            Matrix one = new Matrix();
-            Matrix two = new Matrix();
-            Matrix results = new Matrix();
-            one.importDataMatrix(filepath, 1);
-            two.importDataMatrix(filepath, 3);
-            results.importDataMatrix(filepath, 0);
+            if (getRows() != getCols())
+            {
+                Console.Write("Not a square matrix, returning 0");
+                return 0;
+            }
+            double sum = 0;
+            for (int i = 0; i < getRows(); i++)
+            {
+                sum += matrix[i,i];
+            }
 
-            // results.add(one, two, results);
-            one.scalar(2);
-            results.print(results);
-            Console.ReadKey();
+            return sum;
+
         }
-
-    }
-
+    }    
  public class Operations
     {
         public Matrix mean = new Matrix();
@@ -359,5 +256,5 @@ namespace Project_1
         }
     }
     
-      
+
 }
