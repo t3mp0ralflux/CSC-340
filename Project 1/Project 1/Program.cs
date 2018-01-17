@@ -2,7 +2,6 @@
 using System.Data;
 using System.IO;
 using System.Text;
-using System.Math;
 
 namespace Project_1
 {
@@ -54,23 +53,21 @@ namespace Project_1
             data = dt;
         }
 
-        public string print_data()
+        public void print_data()
         // REDO ME
 
         {
-            string dataPrint = string.Empty;
-            StringBuilder sb = new StringBuilder();
-            foreach (DataRow dataRow in data.Rows)
+            int i;
+            int j;
+
+            for (i = 0; i < data.Rows.Count; i++)
             {
-                foreach (var item in dataRow.ItemArray)
+                for (j = 0; j < data.Columns.Count; j++)
                 {
-                    sb.Append(item);
-                    sb.Append(',');
+                    Console.Write("[" + data.Rows[i][j].ToString() + "]");
                 }
-                sb.AppendLine();
+                Console.Write("\n");
             }
-            dataPrint = sb.ToString();
-            return dataPrint;
         }
 
         public void createBlankMatrix(Matrix one, int rows, int columns)
@@ -298,6 +295,7 @@ namespace Project_1
             }
         }
 
+
         public static void Main()
         {
             string filepath = Directory.GetCurrentDirectory().ToString() + "\\2017 Fall Project 1 data.txt";
@@ -316,148 +314,50 @@ namespace Project_1
 
     }
 
-/*   public class Operations
+ public class Operations
     {
-        public static DataTable m_dataTableOne = new DataTable();
-        public static DataTable m_dataTableTwo = new DataTable();
-        public static DataTable m_results = new DataTable();
+        public Matrix mean = new Matrix();
+        public Matrix covariance = new Matrix();
+        
 
-
-        public static DataTable add(DataTable one, DataTable two)
+        public Matrix get_mean()
         {
-            int i;
-            int j;
-
-            if (one.Rows.Count == two.Rows.Count)
-            {
-                for (i = 0; i < one.Rows.Count; i++)
-                {
-                    for (j = 0; j < one.Columns.Count; j++)
-                    {
-                        m_results.Rows[i][j] = Double.Parse(one.Rows[i][j].ToString()) + Double.Parse(two.Rows[i][j].ToString());
-                    }
-                }
-                return m_results;
-            }
-            else
-            {
-                return zero(m_results);
-            }
+            return mean;
         }
 
-        public static DataTable subtract(DataTable one, DataTable two)
+        public Matrix get_covariance()
         {
-            int i;
-            int j;
-
-            if (one.Rows.Count == two.Rows.Count)
-            {
-                for (i = 0; i < one.Rows.Count; i++)
-                {
-                    for (j = 0; j < one.Columns.Count; j++)
-                    {
-                        m_results.Rows[i][j] = Double.Parse(one.Rows[i][j].ToString()) - Double.Parse(two.Rows[i][j].ToString());
-                    }
-                }
-                return m_results;
-            }
-            else
-            {
-                return zero(m_results);
-            }
+            return covariance;
         }
 
-        public static DataTable identity(DataTable one)
+        public void setup()
         {
-            int i;
-            int j;
-            one = zero(one);
-
-            for (i = 0; i < one.Rows.Count; i++)
-            {
-                for (j = 0; j < one.Columns.Count; j++)
-                    one.Rows[i][j] = 1;
-            }
-            return one;
+            covariance.createBlankMatrix(covariance, 2, 2);
+            mean.createBlankMatrix(mean, 1, 2);
         }
 
-        public static DataTable zero(DataTable one)
+        public void loadEigendata()
         {
-            int i;
-            int j;
-            for (i = 0; i < one.Rows.Count; i++)
-            {
-                for (j = 0; j < one.Columns.Count; j++)
-                    one.Rows[i][j] = 0;
-            }
-            return one;
+
         }
 
-        public static void print(DataTable results)
+        public void set_mean(Matrix one)
         {
-            int i;
-            int j;
+            double a;
+            double b;
 
-            for (i = 0; i < results.Rows.Count; i++)
+            for (int i = 0; i < one.numRows; i++)
             {
-                for (j = 0; j < results.Columns.Count; j++)
-                {
-                    Console.Write("[" + results.Rows[i][j].ToString() + "]");
-                }
-                Console.Write("\n");
+                a += double.Parse(one.data.Rows[i][0].ToString());
+                b += double.Parse(one.data.Rows[i][1].ToString());
             }
+            one.data.Rows[0][0] = a;
+            one.data.Rows[0][1] = b;
+            one.scalar(1 / one.numRows);
+            
+
         }
-
-        public static void importDataMatrix(string filepath, int startColumns)
-        {
-            for (int col = 0; col < 2; col++)
-            {
-                m_dataTableOne.Columns.Add(new DataColumn());
-                m_dataTableTwo.Columns.Add(new DataColumn());
-                m_results.Columns.Add(new DataColumn());
-            }
-            string[] lines = System.IO.File.ReadAllLines(filepath);
-
-            foreach (string line in lines)
-            {
-                var cols = line.Split('\t');
-
-                DataRow dr = m_dataTableOne.NewRow();
-                DataRow dr2 = m_dataTableTwo.NewRow();
-
-                for (int cIndex = 0; cIndex < 2; cIndex++)
-                {
-                    dr[cIndex] = cols[cIndex];
-                    dr2[cIndex] = cols[cIndex + 2];
-                }
-                //for (int cIndex = 2; cIndex <4; cIndex++)
-                //{
-                //    dr2[cIndex] = cols[cIndex];
-                //}
-                m_dataTableOne.Rows.Add(dr);
-                m_dataTableTwo.Rows.Add(dr2);
-            }
-            DataRow dr3 = m_results.NewRow();
-            for (int rIndex = 0; rIndex < m_dataTableOne.Rows.Count; rIndex++)
-            {
-                m_results.Rows.Add();
-            }
-        }
-
-        public static void Main()
-        {
-            string filepath = Directory.GetCurrentDirectory().ToString() + "\\2017 Fall Project 1 data.txt";
-            importData(filepath);
-
-            m_results = Operations.add(m_dataTableOne, m_dataTableTwo);
-
-            print(m_results);
-            Console.ReadKey();
-        }
-
-
-
-
     }
-    */
+    
+      
 }
