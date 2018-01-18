@@ -17,12 +17,12 @@ namespace Project_1
 
         public int getRows()
         {
-            return matrix.GetLength(1);
+            return matrix.GetLength(0);
         }
 
         public int getCols()
         {
-            return matrix.GetLength(0);
+            return matrix.GetLength(1);
         }
 
         public double getVal(int i, int j)
@@ -33,9 +33,9 @@ namespace Project_1
         public Matrix multiply(double scalar)
         {
             Matrix temp = new Matrix(matrix);
-            for (int i = 0; i < matrix.Length; i++)
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < matrix.Length; j++)
                 {
                     temp.matrix[i,j] *= scalar;
                 }
@@ -49,11 +49,11 @@ namespace Project_1
                 return null;
 
             double[,] c = new double[getRows(),other.getCols()];
-            for (int i = 0; i < getCols(); i++)
+            for (int i = 0; i < getRows(); i++)
             {
-                for (int j = 0; j < other.getRows(); j++)
+                for (int j = 0; j < other.getCols(); j++)
                 {
-                    for (int k = 0; k < getRows(); k++)
+                    for (int k = 0; k < getCols(); k++)
                     {
                         c[i,j] = c[i,j] + (matrix[i,k] * other.getVal(k, j));
                     }
@@ -69,10 +69,10 @@ namespace Project_1
             {
                 return null;
             }
-            double[,] temp = new double[getCols(),getRows()];
-            for (int i = 0; i < getCols(); i++)
+            double[,] temp = new double[getRows(),getCols()];
+            for (int i = 0; i < getRows(); i++)
             {
-                for (int j = 0; j < getRows(); j++)
+                for (int j = 0; j < getCols(); j++)
                 {
                     temp[i,j] = matrix[i,j] + other.matrix[i,j];
                 }
@@ -86,10 +86,10 @@ namespace Project_1
             {
                 return null;
             }
-            double[,] temp = new double[getCols(),getRows()];
-            for (int i = 0; i < getCols(); i++)
+            double[,] temp = new double[getRows(),getCols()];
+            for (int i = 0; i < getRows(); i++)
             {
-                for (int j = 0; j < getRows(); j++)
+                for (int j = 0; j < getCols(); j++)
                 {
                     temp[i,j] = matrix[i,j] - other.matrix[i,j];
                 }
@@ -99,12 +99,12 @@ namespace Project_1
 
         public void printMatrix()
         {
-            for (int i = 0; i < getCols(); i++)
+            for (int i = 0; i < getRows(); i++)
             {
                 Console.Write("[");
-                for (int j = 0; j < getRows(); j++)
+                for (int j = 0; j < getCols(); j++)
                 {
-                    Console.Write(matrix[i,j]);
+                    Console.Write(matrix[i,j] + " ");
                 }
                 Console.Write("]");
             }
@@ -113,10 +113,10 @@ namespace Project_1
 
         public Matrix transpose()
         {
-            double[,] temp = new double[getRows(),getCols()];
-            for (int i = 0; i < getCols(); i++)
+            double[,] temp = new double[getCols(),getRows()];
+            for (int i = 0; i < getRows(); i++)
             {
-                for (int j = 0; j < getRows(); j++)
+                for (int j = 0; j < getCols(); j++)
                 {
                     temp[j,i] = matrix[i,j];
                 }
@@ -232,9 +232,9 @@ namespace Project_1
         {
             // makes a 2d array that is the size of augmented matrix
             double[,] newMatrix = new double[getRows(),getCols() + mat.getCols()];
-            for (int i = 0; i < newMatrix.Length; i++)
+            for (int i = 0; i < newMatrix.GetLength(0); i++)
             {
-                for (int j = 0; j < newMatrix.GetLength(0); j++)
+                for (int j = 0; j < newMatrix.GetLength(1); j++)
                 {
                     if (j < getCols())
                     {
@@ -463,7 +463,7 @@ namespace Project_1
     }    
  public class ProjectOne
     {
-        private static String dataFile = Directory.GetCurrentDirectory().ToString() + "\\2017 Fall Project 1 Data.txt";
+        private static String dataFile = Directory.GetCurrentDirectory().ToString() + "\\p1data.txt";
         private static String findingsFile = Directory.GetCurrentDirectory().ToString() + "\\p1findings.txt";
 
         private static List<Matrix> class1 = new List<Matrix>();
@@ -484,13 +484,13 @@ namespace Project_1
             {
                 currentLine = sr.ReadLine();
                 string[] line = currentLine.Split('\t');
-                double[,] matrix1 = new double[2,1];
-                double[,] matrix2 = new double[2,1];
+                double[,] matrix1 = new double[1,2];
+                double[,] matrix2 = new double[1,2];
                 matrix1[0,0] = Double.Parse(line[0]);
-                matrix1[1,0] = Double.Parse(line[1]);
+                matrix1[0,1] = Double.Parse(line[1]);
                 class1.Add(new Matrix(matrix1));
                 matrix2[0,0] = Double.Parse(line[2]);
-                matrix2[1,0] = Double.Parse(line[3]);
+                matrix2[0,1] = Double.Parse(line[3]);
                 class2.Add(new Matrix(matrix2));
             }
 
@@ -531,37 +531,38 @@ namespace Project_1
 
             for (int i = 1; i < class1.Count; i++)
             {
-                Matrix temp = class1[i];
-                temp = temp.subtract(m1);
-                temp = temp.multiply(temp.transpose());
-                cov1 = cov1.add(temp);
+                Matrix temp1 = class1[i];
+                temp1 = temp1.subtract(m1);
+                temp1 = temp1.multiply(temp1.transpose());
+                cov1 = cov1.add(temp1);
             }
 
             for (int i = 1; i < class2.Count; i++)
             {
-                Matrix temp = class2[i];
-                temp = temp.subtract(m2);
-                temp = temp.multiply(temp.transpose());
-                cov2 = cov2.add(temp);
+                Matrix temp2 = class2[i];
+                temp2 = temp2.subtract(m2);
+                temp2 = temp2.multiply(temp2.transpose());
+                cov2 = cov2.add(temp2);
             }
 
             cov1 = cov1.multiply(1.0 / class1.Count);
             cov2 = cov2.multiply(1.0 / class2.Count);
 
-            Console.WriteLine("");
+            Console.WriteLine("\n");
             Console.WriteLine("The covariance matrix for class 1:");
             cov1.printMatrix();
 
-            Console.WriteLine("");
+            Console.WriteLine("\n");
             Console.WriteLine("The covariance matrix for class 2:");
             cov2.printMatrix();
 
             double cov1Determinant = cov1.findDeterminant();
             double cov2Determinant = cov2.findDeterminant();
 
+            Console.WriteLine("\n");
             Console.WriteLine("Determinant of Covariance Matrix 1:" + cov1Determinant);
             Console.WriteLine("Determinant of Covariance Matrix 2:" + cov2Determinant);
-            Console.WriteLine("");
+            Console.ReadKey();
 
             Matrix cov1Inverse = cov1.findInverse();
             Matrix cov2Inverse = cov2.findInverse();
@@ -573,9 +574,13 @@ namespace Project_1
             Matrix s2 = new Matrix(sys2);
 
             s2 = s1.gaussJordan(s2);
-            Console.WriteLine(s1.findDeterminant());
+            Console.WriteLine("\n");
+            Console.WriteLine("Determinant of System of Equations is:" + s1.findDeterminant());
             s2 = s1.findInverse();
+            Console.WriteLine("\n");
+            Console.WriteLine("Inverse of System is:");
             s2.printMatrix();
+            Console.ReadKey();
         } 
     }
     

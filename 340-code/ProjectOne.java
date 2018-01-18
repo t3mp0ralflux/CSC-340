@@ -6,7 +6,7 @@ import java.io.*;
 
 public class ProjectOne {
 
-	private static final String dataFile = "C:\\Users\\Phillip\\Desktop\\Programs\\340\\p1data.txt";
+	private static final String dataFile = "C:\\Users\\BelangerB\\Desktop\\melanie\\CSC-340\\Project 1\\Project 1\\bin\\Debug\\p1data.txt";
 	private static final String findingsFile = "C:\\Users\\Phillip\\Desktop\\Programs\\340\\p1findings.txt";
 
 	private static ArrayList<Matrix> class1 = new ArrayList<Matrix>();
