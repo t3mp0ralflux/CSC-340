@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 
+// THE ENTIRE PROJECT RUNS UNDER Matrix[ROWS, COLUMNS]
 namespace Project_1
 {
       public class Matrix
@@ -35,7 +36,7 @@ namespace Project_1
             Matrix temp = new Matrix(matrix);
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix.Length; j++)
+                for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     temp.matrix[i,j] *= scalar;
                 }
@@ -484,13 +485,13 @@ namespace Project_1
             {
                 currentLine = sr.ReadLine();
                 string[] line = currentLine.Split('\t');
-                double[,] matrix1 = new double[1,2];
-                double[,] matrix2 = new double[1,2];
+                double[,] matrix1 = new double[2,1];
+                double[,] matrix2 = new double[2,1];
                 matrix1[0,0] = Double.Parse(line[0]);
-                matrix1[0,1] = Double.Parse(line[1]);
+                matrix1[1,0] = Double.Parse(line[1]);
                 class1.Add(new Matrix(matrix1));
                 matrix2[0,0] = Double.Parse(line[2]);
-                matrix2[0,1] = Double.Parse(line[3]);
+                matrix2[1,0] = Double.Parse(line[3]);
                 class2.Add(new Matrix(matrix2));
             }
 

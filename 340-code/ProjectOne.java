@@ -6,20 +6,22 @@ import java.io.*;
 
 public class ProjectOne {
 
-	private static final String dataFile = "C:\\Users\\BelangerB\\Desktop\\melanie\\CSC-340\\Project 1\\Project 1\\bin\\Debug\\p1data.txt";
-	private static final String findingsFile = "C:\\Users\\Phillip\\Desktop\\Programs\\340\\p1findings.txt";
+	private static final String dataFile = "E:\\csc340\\csc-340\\Project 1\\Project 1\\bin\\Debug\\p1data.txt";
+	//private static final String findingsFile = "C:\\Users\\Phillip\\Desktop\\Programs\\340\\p1findings.txt";
 
 	private static ArrayList<Matrix> class1 = new ArrayList<Matrix>();
 	private static ArrayList<Matrix> class2 = new ArrayList<Matrix>();
 
-	public static void main (String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException{
 
-		 
+		FileReader infile = new FileReader(dataFile);
+		Scanner fileReader = new Scanner(infile);
 		String line = "";
 
 		// skip over the first lines that do not contain data
-		for (int i=0; i < 9; i++)
+		for (int i=0; i < 1; i++){
 			fileReader.nextLine();
+		}
 
 		// read in all the data
 		// put class 1 in class1 arraylist
