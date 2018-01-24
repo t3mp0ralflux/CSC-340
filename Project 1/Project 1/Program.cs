@@ -477,7 +477,7 @@ namespace Project_1
             var sr = new StreamReader(dataFile, Encoding.UTF8, true, 128);
             
             //skips N number of lines
-            for(int n = 0; n < 1; n++)
+            for(int n = 0; n < 2; n++)
             {
                 sr.ReadLine();
             }
@@ -568,15 +568,15 @@ namespace Project_1
             Matrix cov1Inverse = cov1.findInverse();
             Matrix cov2Inverse = cov2.findInverse();
 
-            double[,] sys1 = { { 1, 2, -1, 2, 1, 1, -2, -1 }, { 2, -1, 2, 2, -1, -2, 2, 2 }, { -2, 0, 2, 2, -1, 0, -1, 1 }, { 2, 2, -3, 3, 2, 2, 1, 0 }, { 0, 0, 2, 3, -2, 2, 3, 4 }, { 1, 1, 2, 2, 0, 2, 0, -1 }, { -3, 0, 3, 0, 1, -3, 0, -2 }, { 2, 1, 1, -2, 1, 0, 1, 1 } };
-            double[,] sys2 = { { 1 }, { 2 }, { 3 }, { 4 }, { -1 }, { -2 }, { -3 }, { -4 } };
+            double[,] sys1 = { { 2, 1, -1, -1, 1, 0, -1, -1 }, { 1, 0, 2, 0, -1, -2, 2, 2 }, { 0, -2, 5, 4, -1, 0, 3, 1 }, { 1, 1, -7, 3, 2, 1, -1, 0 }, { 1, 1, 2, 3, -2, 2, 2, 9 }, { 0, -3, -2, 2, 0, 2, 4, -5 }, { -2, 5, -1, 1, 1, 3, 0, -2 }, { 1, 0, 1, 1, 0, 2, 1, 1 } };
+            double[,] sys2 = { { 1 }, { -1 }, { 2 }, { -2 }, { 3 }, { -3 }, { 4 }, { -4 } };
 
             Matrix s1 = new Matrix(sys1);
             Matrix s2 = new Matrix(sys2);
 
             s2 = s1.gaussJordan(s2);
             Console.WriteLine("\n");
-            Console.WriteLine("Determinant of System of Equations is:" + s1.findDeterminant());
+            Console.WriteLine("Determinant of System of Equations is:" + s2.findDeterminant());
             s2 = s1.findInverse();
             Console.WriteLine("\n");
             Console.WriteLine("Inverse of System is:");
