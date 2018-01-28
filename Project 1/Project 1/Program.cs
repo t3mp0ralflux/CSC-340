@@ -46,7 +46,7 @@ namespace Project_1
 
         public Matrix multiply(Matrix other)
         {
-            if (other.getCols() != getRows())
+            if (other.getRows() != getCols())
                 return null;
 
             double[,] c = new double[getRows(),other.getCols()];
@@ -574,6 +574,65 @@ namespace Project_1
             cov2Inverse.printMatrix();
             Console.ReadKey();
             //next is to do the analysis of the two and categorize the points
+
+            Matrix g1;
+            Matrix g2;
+            List<Matrix> outcast1 = new List<Matrix>();
+            List<Matrix> outcast2 = new List<Matrix>();
+
+            for (int i = 0; i < class1.Count; i++)
+            {
+                g1 = class1[i].subtract(m1);
+                g1 = g1.transpose();
+                g1 = g1.multiply(cov1Inverse);
+                g1 = g1.multiply(class1[i].subtract(m1));
+                g1 = g1.multiply(-0.5);
+
+                g2 = class1[i].subtract(m2);
+                g2 = g2.transpose();
+                g2 = g2.multiply(cov2Inverse);
+                g2 = g2.multiply(class1[i].subtract(m2));
+                g2 = g2.multiply(-0.5);
+
+                if (g1.getVal(0, 0) < g2.getVal(0, 0)){
+
+                    outcast1.Add(new Matrix(class1[i].matrix));
+                }
+            }
+
+            for (int i = 0; i < class2.Count; i++)
+            {
+                g1 = class2[i].subtract(m2);
+                g1 = g1.transpose();
+                g1 = g1.multiply(cov2Inverse);
+                g1 = g1.multiply(class2[i].subtract(m2));
+                g1 = g1.multiply(-0.5);
+
+                g2 = class2[i].subtract(m1);
+                g2 = g2.transpose();
+                g2 = g2.multiply(cov1Inverse);
+                g2 = g2.multiply(class2[i].subtract(m1));
+                g2 = g2.multiply(-0.5);
+
+                if (g1.getVal(0, 0) < g2.getVal(0, 0))
+                {
+
+                    outcast2.Add(new Matrix(class2[i].matrix));
+                }
+            }
+
+            Console.WriteLine("The error points in class 1 are:");
+            for (int i = 0; i < outcast1.Count; i++) {
+                outcast1[i].printMatrix();
+            }
+
+            Console.WriteLine("The error points in class 2 are:");
+            for (int i=0; i< outcast2.Count; i++)
+            {
+                outcast2[i].printMatrix();
+            }
+            Console.ReadKey();
+            //above was the analysis.
 
 
             double[,] sys1 = { { 2, 1, -1, -1, 1, 0, -1, -1 }, { 1, 0, 2, 0, -1, -2, 2, 2 }, { 0, -2, 5, 4, -1, 0, 3, 1 }, { 1, 1, -7, 3, 2, 1, -1, 0 }, { 1, 1, 2, 3, -2, 2, 2, 9 }, { 0, -3, -2, 2, 0, 2, 4, -5 }, { -2, 5, -1, 1, 1, 3, 0, -2 }, { 1, 0, 1, 1, 0, 2, 1, 1 } };
