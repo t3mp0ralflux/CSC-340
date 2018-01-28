@@ -105,9 +105,9 @@ namespace Project_1
                 Console.Write("[");
                 for (int j = 0; j < getCols(); j++)
                 {
-                    Console.Write(matrix[i,j] + " ");
+                    Console.Write(matrix[i,j] + ", ");
                 }
-                Console.Write("]");
+                Console.WriteLine("]");
             }
             
         }
@@ -563,10 +563,18 @@ namespace Project_1
             Console.WriteLine("\n");
             Console.WriteLine("Determinant of Covariance Matrix 1:" + cov1Determinant);
             Console.WriteLine("Determinant of Covariance Matrix 2:" + cov2Determinant);
-            Console.ReadKey();
+            
 
             Matrix cov1Inverse = cov1.findInverse();
             Matrix cov2Inverse = cov2.findInverse();
+
+            Console.WriteLine("Inverse Covariance of Matrix 1:");
+            cov1Inverse.printMatrix();
+            Console.WriteLine("Inverse Covariance of Matrix 2:");
+            cov2Inverse.printMatrix();
+            Console.ReadKey();
+            //next is to do the analysis of the two and categorize the points
+
 
             double[,] sys1 = { { 2, 1, -1, -1, 1, 0, -1, -1 }, { 1, 0, 2, 0, -1, -2, 2, 2 }, { 0, -2, 5, 4, -1, 0, 3, 1 }, { 1, 1, -7, 3, 2, 1, -1, 0 }, { 1, 1, 2, 3, -2, 2, 2, 9 }, { 0, -3, -2, 2, 0, 2, 4, -5 }, { -2, 5, -1, 1, 1, 3, 0, -2 }, { 1, 0, 1, 1, 0, 2, 1, 1 } };
             double[,] sys2 = { { 1 }, { -1 }, { 2 }, { -2 }, { 3 }, { -3 }, { 4 }, { -4 } };
@@ -575,6 +583,7 @@ namespace Project_1
             Matrix s2 = new Matrix(sys2);
 
             s2 = s1.gaussJordan(s2);
+            s2.printMatrix();
             Console.WriteLine("\n");
             Console.WriteLine("Determinant of System of Equations is:" + s2.findDeterminant());
             s2 = s1.findInverse();
