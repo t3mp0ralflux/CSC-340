@@ -483,7 +483,7 @@ namespace Project_1
             }
             while((currentLine = sr.ReadLine()) != null)
             {
-                currentLine = sr.ReadLine();
+               // currentLine = sr.ReadLine();
                 string[] line = currentLine.Split('\t');
                 double[,] matrix1 = new double[2,1];
                 double[,] matrix2 = new double[2,1];
@@ -577,8 +577,59 @@ namespace Project_1
 
             Matrix g1;
             Matrix g2;
+            double answer1;
+            double answer2;
             List<Matrix> outcast1 = new List<Matrix>();
             List<Matrix> outcast2 = new List<Matrix>();
+
+            {
+                g1 = m1.subtract(m1);
+                g1 = g1.transpose();
+                g1 = g1.multiply(cov1Inverse);
+                g1 = g1.multiply(m1.subtract(m1));
+                g1 = g1.multiply(-0.5);
+
+                g2 = m1.subtract(m2);
+                g2 = g2.transpose();
+                g2 = g2.multiply(cov2Inverse);
+                g2 = g2.multiply(m1.subtract(m2));
+                g2 = g2.multiply(-0.5);
+
+                if (g1.getVal(0, 0) > g2.getVal(0, 0))
+                {
+
+                    Console.WriteLine("m1 was classified into class 1");
+                }
+                else
+                {
+                    Console.WriteLine("m1 was classified into class 2");
+                }
+            }
+
+            {
+                g1 = m2.subtract(m2);
+                g1 = g1.transpose();
+                g1 = g1.multiply(cov2Inverse);
+                g1 = g1.multiply(m2.subtract(m2));
+                g1 = g1.multiply(-0.5);
+
+                g2 = m2.subtract(m1);
+                g2 = g2.transpose();
+                g2 = g2.multiply(cov1Inverse);
+                g2 = g2.multiply(m2.subtract(m1));
+                g2 = g2.multiply(-0.5);
+
+                if (g1.getVal(0, 0) > g2.getVal(0, 0))
+                {
+
+                    Console.WriteLine("m2 was classified into class 2");
+                }
+                else
+                {
+                    Console.WriteLine("m2 was classified into class 1");
+                }
+            }
+            Console.ReadKey();
 
             for (int i = 0; i < class1.Count; i++)
             {
@@ -587,16 +638,22 @@ namespace Project_1
                 g1 = g1.multiply(cov1Inverse);
                 g1 = g1.multiply(class1[i].subtract(m1));
                 g1 = g1.multiply(-0.5);
+                answer1 = g1.getVal(0, 0);
+                answer1 = answer1-(Math.Log(cov1Determinant));
 
                 g2 = class1[i].subtract(m2);
                 g2 = g2.transpose();
                 g2 = g2.multiply(cov2Inverse);
                 g2 = g2.multiply(class1[i].subtract(m2));
                 g2 = g2.multiply(-0.5);
+                answer2 = g2.getVal(0, 0);
+                answer2 = answer2 - (Math.Log(cov2Determinant));
 
-                if (g1.getVal(0, 0) < g2.getVal(0, 0)){
+                if (answer1 < answer2){
 
                     outcast1.Add(new Matrix(class1[i].matrix));
+                    Console.WriteLine("Point " + i + "G1:" + answer1);
+                    Console.WriteLine("Point " + i + "G2:" + answer2);
                 }
             }
 
@@ -607,17 +664,23 @@ namespace Project_1
                 g1 = g1.multiply(cov2Inverse);
                 g1 = g1.multiply(class2[i].subtract(m2));
                 g1 = g1.multiply(-0.5);
+                answer1 = g1.getVal(0, 0);
+                answer1 = answer1 - (Math.Log(cov2Determinant));
 
                 g2 = class2[i].subtract(m1);
                 g2 = g2.transpose();
                 g2 = g2.multiply(cov1Inverse);
                 g2 = g2.multiply(class2[i].subtract(m1));
                 g2 = g2.multiply(-0.5);
+                answer2 = g2.getVal(0, 0);
+                answer2 = answer2 - (Math.Log(cov1Determinant));
 
-                if (g1.getVal(0, 0) < g2.getVal(0, 0))
+                if (answer1 < answer2)
                 {
 
                     outcast2.Add(new Matrix(class2[i].matrix));
+                    Console.WriteLine("Point " + i + "G2:" + answer1);
+                    Console.WriteLine("Point " + i + "G1:" + answer2);
                 }
             }
 
