@@ -136,67 +136,6 @@ namespace Project_1
             }
         }
 
-        public double findDeterminant()
-        {
-            int p;
-            int r = 0;
-            double determinant = 0;
-
-            // augment current matrix with the values
-            Matrix C = new Matrix(matrix);
-
-            for (int j = 0; j < C.getRows(); j++)
-            {
-                p = j;
-
-                // loop through each row and find the pivot
-                for (int i = 0; i < C.getRows(); i++)
-                {
-
-                    // look at the absolute value of the pivot and see if it is larger than current pivot
-                    // if so, make that the new pivot
-                    if (Math.Abs(C.matrix[p,j]) < Math.Abs(C.matrix[i,j]))
-                    {
-                        p = i;
-                    }
-                }
-
-                // interchange if the pivot is below row j
-                if (p > j)
-                {
-                    C.interchange(j, p);
-                    r++;
-                }
-
-                for (int i = 0; i < C.getRows(); i++)
-                {
-                    if (i > j)
-                    {
-                        double Cij = C.matrix[i,j];
-                        double Cjj = C.matrix[j,j];
-                        for (int k = 0; k < C.getCols(); k++)
-                        {
-                            C.matrix[i,k] = C.matrix[i,k] - (C.matrix[j,k] * (Cij / Cjj));
-                        }
-                    }
-                }
-
-            }
-
-            // initialize determinant to the value in C00
-            determinant = C.matrix[0,0];
-            // then multiply down the diagoanl
-            for (int i = 1; i < C.getRows(); i++)
-            {
-                determinant = determinant * C.matrix[i,i];
-            }
-
-            // put the negative/positive sign if needed
-            determinant = determinant * Math.Pow((-1), r);
-
-            return determinant;
-        }
-
         // multiplies a row by a constant
         public void rowMultiply(int row, double scalar)
         {
@@ -469,7 +408,77 @@ namespace Project_1
 
         private static List<Matrix> class1 = new List<Matrix>();
         private static List<Matrix> class2 = new List<Matrix>();
-        
+
+        public static double findDeterminant(Matrix mat)
+        {
+            int p;
+            int r = 0;
+            double determinant = 0;
+
+            // augment current matrix with the values
+            Matrix det = mat;
+            //had to add meg as this thing wouldn't stop passing by ref instead of value
+            double[,] meg = new double[mat.getRows(),mat.getCols()];
+            for(int i=0; i<mat.getRows(); i++)
+            {
+                for(int j=0; j<mat.getCols(); j++)
+                {
+                    meg[i, j] = mat.getVal(i, j);
+                }
+            }
+
+            for (int j = 0; j < det.getRows(); j++)
+            {
+                p = j;
+
+                // loop through each row and find the pivot
+                for (int i = 0; i < det.getRows(); i++)
+                {
+
+                    // look at the absolute value of the pivot and see if it is larger than current pivot
+                    // if so, make that the new pivot
+                    if (Math.Abs(det.matrix[p, j]) < Math.Abs(det.matrix[i, j]))
+                    {
+                        p = i;
+                    }
+                }
+
+                // interchange if the pivot is below row j
+                if (p > j)
+                {
+                    det.interchange(j, p);
+                    r++;
+                }
+
+                for (int i = 0; i < det.getRows(); i++)
+                {
+                    if (i > j)
+                    {
+                        double Cij = det.matrix[i, j];
+                        double Cjj = det.matrix[j, j];
+                        for (int k = 0; k < det.getCols(); k++)
+                        {
+                            meg[i,k] = det.matrix[i, k] - (det.matrix[j, k] * (Cij / Cjj));
+                        }
+                    }
+                }
+
+            }
+
+            // initialize determinant to the value in C00
+            determinant = meg[0, 0];
+            // then multiply down the diagonal
+            for (int i = 1; i < meg.GetLength(0); i++)
+            {
+                determinant = determinant * meg[i, i];
+            }
+
+            // put the negative/positive sign if needed
+            determinant = determinant * Math.Pow((-1), r);
+
+            return determinant;
+        }
+
         public static void Main(String[] args)
         {
             String currentLine = "";
@@ -485,13 +494,13 @@ namespace Project_1
             {
                // currentLine = sr.ReadLine();
                 string[] line = currentLine.Split('\t');
-                double[,] matrix1 = new double[2,1];
-                double[,] matrix2 = new double[2,1];
+                double[,] matrix1 = new double[1,2];
+                double[,] matrix2 = new double[1,2];
                 matrix1[0,0] = Double.Parse(line[0]);
-                matrix1[1,0] = Double.Parse(line[1]);
+                matrix1[0,1] = Double.Parse(line[1]);
                 class1.Add(new Matrix(matrix1));
                 matrix2[0,0] = Double.Parse(line[2]);
-                matrix2[1,0] = Double.Parse(line[3]);
+                matrix2[0,1] = Double.Parse(line[3]);
                 class2.Add(new Matrix(matrix2));
             }
 
@@ -522,27 +531,35 @@ namespace Project_1
             m2.printMatrix();
 
             Matrix cov1;
+            Matrix cov1transpose;
             Matrix cov2;
+            Matrix cov2transpose;
 
             cov1 = class1[0].subtract(m1);
-            cov1 = cov1.multiply(cov1.transpose());
+            cov1transpose = cov1.transpose();
+            cov1 = cov1transpose.multiply(cov1);
 
             cov2 = class2[0].subtract(m2);
-            cov2 = cov2.multiply(cov2.transpose());
+            cov2transpose = cov2.transpose();
+            cov2 = cov2transpose.multiply(cov2);
 
             for (int i = 1; i < class1.Count; i++)
             {
                 Matrix temp1 = class1[i];
+                Matrix temp1transpose;
                 temp1 = temp1.subtract(m1);
-                temp1 = temp1.multiply(temp1.transpose());
+                temp1transpose = temp1.transpose();
+                temp1 = temp1transpose.multiply(temp1);
                 cov1 = cov1.add(temp1);
             }
 
             for (int i = 1; i < class2.Count; i++)
             {
                 Matrix temp2 = class2[i];
+                Matrix temp2transpose;
                 temp2 = temp2.subtract(m2);
-                temp2 = temp2.multiply(temp2.transpose());
+                temp2transpose = temp2.transpose();
+                temp2 = temp2transpose.multiply(temp2);
                 cov2 = cov2.add(temp2);
             }
 
@@ -557,8 +574,8 @@ namespace Project_1
             Console.WriteLine("The covariance matrix for class 2:");
             cov2.printMatrix();
 
-            double cov1Determinant = cov1.findDeterminant();
-            double cov2Determinant = cov2.findDeterminant();
+            double cov1Determinant = findDeterminant(cov1);
+            double cov2Determinant = findDeterminant(cov2);
 
             Console.WriteLine("\n");
             Console.WriteLine("Determinant of Covariance Matrix 1:" + cov1Determinant);
@@ -579,19 +596,25 @@ namespace Project_1
             Matrix g2;
             double answer1;
             double answer2;
+            double last_half;
             List<Matrix> outcast1 = new List<Matrix>();
             List<Matrix> outcast2 = new List<Matrix>();
+            List<Matrix> boundary1 = new List<Matrix>();
+            List<Matrix> boundary2 = new List<Matrix>();
+            Double epsilon = 0.01;
+            Double scale = 0.005;
+            Double mag = 0;
 
             {
                 g1 = m1.subtract(m1);
                 g1 = g1.transpose();
-                g1 = g1.multiply(cov1Inverse);
+                g1 = cov1Inverse.multiply(g1);
                 g1 = g1.multiply(m1.subtract(m1));
                 g1 = g1.multiply(-0.5);
 
                 g2 = m1.subtract(m2);
                 g2 = g2.transpose();
-                g2 = g2.multiply(cov2Inverse);
+                g2 = cov2Inverse.multiply(g2);
                 g2 = g2.multiply(m1.subtract(m2));
                 g2 = g2.multiply(-0.5);
 
@@ -609,13 +632,13 @@ namespace Project_1
             {
                 g1 = m2.subtract(m2);
                 g1 = g1.transpose();
-                g1 = g1.multiply(cov2Inverse);
+                g1 = cov2Inverse.multiply(g1);
                 g1 = g1.multiply(m2.subtract(m2));
                 g1 = g1.multiply(-0.5);
 
                 g2 = m2.subtract(m1);
                 g2 = g2.transpose();
-                g2 = g2.multiply(cov1Inverse);
+                g2 = cov1Inverse.multiply(g2);
                 g2 = g2.multiply(m2.subtract(m1));
                 g2 = g2.multiply(-0.5);
 
@@ -630,62 +653,86 @@ namespace Project_1
                 }
             }
             Console.ReadKey();
-
+            g1 = null;
+            g2 = null;
             for (int i = 0; i < class1.Count; i++)
             {
                 g1 = class1[i].subtract(m1);
-                g1 = g1.transpose();
-                g1 = g1.multiply(cov1Inverse);
-                g1 = g1.multiply(class1[i].subtract(m1));
                 g1 = g1.multiply(-0.5);
+                g1 = g1.multiply(cov1Inverse);
+                g1 = g1.multiply(class1[i].subtract(m1).transpose());
+                
                 answer1 = g1.getVal(0, 0);
-                answer1 = answer1-(Math.Log(cov1Determinant));
+                last_half = (0.5*Math.Log(cov1Determinant));
+                last_half += Math.Log(0.5);
+                answer1 -= last_half;
 
                 g2 = class1[i].subtract(m2);
                 g2 = g2.transpose();
-                g2 = g2.multiply(cov2Inverse);
+                g2 = cov2Inverse.multiply(g2);
                 g2 = g2.multiply(class1[i].subtract(m2));
                 g2 = g2.multiply(-0.5);
                 answer2 = g2.getVal(0, 0);
-                answer2 = answer2 - (Math.Log(cov2Determinant));
+                last_half = (0.5*Math.Log(cov2Determinant));
+                last_half += Math.Log(0.5);
+                answer2 -= last_half;
 
                 if (answer1 < answer2){
 
-                    outcast1.Add(new Matrix(class1[i].matrix));
-                    Console.WriteLine("Point " + i + "G1:" + answer1);
-                    Console.WriteLine("Point " + i + "G2:" + answer2);
+                    outcast1.Add(class1[i]);
+                    Console.WriteLine("Point " + i + "G1: " + answer1);
+                    Console.WriteLine("Point " + i + "G2: " + answer2);
+                }
+                answer1 *= scale;
+                answer2 *= scale;
+                mag = Math.Abs(answer1 - answer2);
+                if (mag < epsilon)
+                {
+                    boundary1.Add(class1[i]);
                 }
             }
 
             for (int i = 0; i < class2.Count; i++)
             {
-                g1 = class2[i].subtract(m2);
-                g1 = g1.transpose();
-                g1 = g1.multiply(cov2Inverse);
-                g1 = g1.multiply(class2[i].subtract(m2));
-                g1 = g1.multiply(-0.5);
-                answer1 = g1.getVal(0, 0);
-                answer1 = answer1 - (Math.Log(cov2Determinant));
-
-                g2 = class2[i].subtract(m1);
+                g2 = class2[i].subtract(m2);
                 g2 = g2.transpose();
-                g2 = g2.multiply(cov1Inverse);
-                g2 = g2.multiply(class2[i].subtract(m1));
+                g2 = cov2Inverse.multiply(g2);
+                g2= g2.multiply(class2[i].subtract(m2));
                 g2 = g2.multiply(-0.5);
-                answer2 = g2.getVal(0, 0);
-                answer2 = answer2 - (Math.Log(cov1Determinant));
+                answer1 = g2.getVal(0, 0);
+                last_half = (Math.Log(cov2Determinant));
+                last_half += Math.Log(0.5);
+                answer1 -= last_half;
+
+                g1 = class2[i].subtract(m1);
+                g1 = g1.transpose();
+                g1 = cov1Inverse.multiply(g1);
+                g1 = g1.multiply(class2[i].subtract(m1));
+                g1 = g1.multiply(-0.5);
+                answer2 = g1.getVal(0, 0);
+                last_half =(Math.Log(cov1Determinant));
+                last_half += Math.Log(0.5);
+                answer2 -= last_half;
 
                 if (answer1 < answer2)
                 {
 
-                    outcast2.Add(new Matrix(class2[i].matrix));
+                    outcast2.Add(class2[i]);
                     Console.WriteLine("Point " + i + "G2:" + answer1);
                     Console.WriteLine("Point " + i + "G1:" + answer2);
+                }
+                answer1 *= scale;
+                answer2 *= scale;
+                mag = Math.Abs(answer1 - answer2);
+                if (mag < epsilon)
+                {
+                    boundary2.Add(class2[i]);
                 }
             }
 
             Console.WriteLine("The error points in class 1 are:");
-            for (int i = 0; i < outcast1.Count; i++) {
+            for (int i = 0; i < outcast1.Count; i++)
+            {
                 outcast1[i].printMatrix();
             }
 
@@ -697,21 +744,90 @@ namespace Project_1
             Console.ReadKey();
             //above was the analysis.
 
+            Console.WriteLine("The boundary points of Class 1 are: ");
+            for(int i=0; i<boundary1.Count; i++)
+            {
+                boundary1[i].printMatrix();
+            }
+            Console.WriteLine("The boundary points of Class 2 are: ");
+            for (int i = 0; i < boundary2.Count; i++)
+            {
+                boundary2[i].printMatrix();
+            }
+            Console.ReadKey();
 
+
+            //below is linear system stuff
             double[,] sys1 = { { 2, 1, -1, -1, 1, 0, -1, -1 }, { 1, 0, 2, 0, -1, -2, 2, 2 }, { 0, -2, 5, 4, -1, 0, 3, 1 }, { 1, 1, -7, 3, 2, 1, -1, 0 }, { 1, 1, 2, 3, -2, 2, 2, 9 }, { 0, -3, -2, 2, 0, 2, 4, -5 }, { -2, 5, -1, 1, 1, 3, 0, -2 }, { 1, 0, 1, 1, 0, 2, 1, 1 } };
             double[,] sys2 = { { 1 }, { -1 }, { 2 }, { -2 }, { 3 }, { -3 }, { 4 }, { -4 } };
 
             Matrix s1 = new Matrix(sys1);
             Matrix s2 = new Matrix(sys2);
 
+            double[,] sys1cond = new Double[1, s1.getCols()];
+            double[,] sys2cond = new Double[1,s1.getCols()];
+
+            Double s1det;
+            Double s2det;
+
             s2 = s1.gaussJordan(s2);
             s2.printMatrix();
             Console.WriteLine("\n");
-            Console.WriteLine("Determinant of System of Equations is:" + s2.findDeterminant());
+            s1det = findDeterminant(s1);
+            Console.WriteLine("Determinant of System of Equations is:" + s1det);
             s2 = s1.findInverse();
             Console.WriteLine("\n");
             Console.WriteLine("Inverse of System is:");
             s2.printMatrix();
+            Console.ReadKey();
+            s2det = findDeterminant(s2);
+            Console.WriteLine("The determinant inverse is: " + s2det);
+            s2 = s2.multiply(s2det);
+            Console.WriteLine("The product of the determinant of the system and it's inverse is: " + (s1det * s2det));
+            Console.ReadKey();
+
+
+            //just put the fucking numbers back in here for god's sake.  Mother fucker won't stop changing values.
+            double[,] sys3 = { { 2, 1, -1, -1, 1, 0, -1, -1 }, { 1, 0, 2, 0, -1, -2, 2, 2 }, { 0, -2, 5, 4, -1, 0, 3, 1 }, { 1, 1, -7, 3, 2, 1, -1, 0 }, { 1, 1, 2, 3, -2, 2, 2, 9 }, { 0, -3, -2, 2, 0, 2, 4, -5 }, { -2, 5, -1, 1, 1, 3, 0, -2 }, { 1, 0, 1, 1, 0, 2, 1, 1 } };
+
+            Matrix condmat1 = new Matrix(sys3);
+            Matrix condmat2 = condmat1.findInverse(); 
+            condmat2 = s1.findInverse();
+            Double cond1 = 0;
+            Double cond2 = 0;
+
+            for (int i=0; i<condmat1.getRows(); i++)
+            {
+                for(int j=0; j<condmat1.getCols(); j++)
+                {
+                    sys1cond[0, j] += Math.Abs(condmat1.getVal(i, j));
+
+                }
+            }
+
+            for (int i = 0; i < condmat2.getRows(); i++)
+            {
+                for (int j = 0; j < condmat2.getCols(); j++)
+                {
+                    sys2cond[0, j] += Math.Abs(condmat2.getVal(i, j));
+
+                }
+            }
+            for(int i=0; i<sys1cond.Length; i++)
+            {
+                if (sys1cond[0,i] > cond1)
+                {
+                    cond1 = sys1cond[0, i];                }
+            }
+            for (int i = 0; i < sys2cond.Length; i++)
+            {
+                if (sys2cond[0, i] > cond2)
+                {
+                    cond2 = sys2cond[0, i];
+                }
+            }
+
+            Console.WriteLine("The condition number for the system and the inverse is: " + (cond1 * cond2));
             Console.ReadKey();
         } 
     }
