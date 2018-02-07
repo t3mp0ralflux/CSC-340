@@ -399,45 +399,34 @@ namespace Project_1
             return new Matrix(temp);
 
         }
-
-    }    
- public class ProjectOne
-    {
-        private static String dataFile = Directory.GetCurrentDirectory().ToString() + "\\p1data.txt";
-        private static String findingsFile = Directory.GetCurrentDirectory().ToString() + "\\p1findings.txt";
-
-        private static List<Matrix> class1 = new List<Matrix>();
-        private static List<Matrix> class2 = new List<Matrix>();
-
-        public static double findDeterminant(Matrix mat)
+        public double findDeterminant()
         {
             int p;
             int r = 0;
             double determinant = 0;
 
             // augment current matrix with the values
-            Matrix det = mat;
             //had to add meg as this thing wouldn't stop passing by ref instead of value
-            double[,] meg = new double[mat.getRows(),mat.getCols()];
-            for(int i=0; i<mat.getRows(); i++)
+            double[,] meg = new double[getRows(), getCols()];
+            for (int i = 0; i < getRows(); i++)
             {
-                for(int j=0; j<mat.getCols(); j++)
+                for (int j = 0; j < getCols(); j++)
                 {
-                    meg[i, j] = mat.getVal(i, j);
+                    meg[i, j] = getVal(i, j);
                 }
             }
 
-            for (int j = 0; j < det.getRows(); j++)
+            for (int j = 0; j < getRows(); j++)
             {
                 p = j;
 
                 // loop through each row and find the pivot
-                for (int i = 0; i < det.getRows(); i++)
+                for (int i = 0; i < getRows(); i++)
                 {
 
                     // look at the absolute value of the pivot and see if it is larger than current pivot
                     // if so, make that the new pivot
-                    if (Math.Abs(det.matrix[p, j]) < Math.Abs(det.matrix[i, j]))
+                    if (Math.Abs(matrix[p, j]) < Math.Abs(matrix[i, j]))
                     {
                         p = i;
                     }
@@ -446,19 +435,19 @@ namespace Project_1
                 // interchange if the pivot is below row j
                 if (p > j)
                 {
-                    det.interchange(j, p);
+                    interchange(j, p);
                     r++;
                 }
 
-                for (int i = 0; i < det.getRows(); i++)
+                for (int i = 0; i < getRows(); i++)
                 {
                     if (i > j)
                     {
-                        double Cij = det.matrix[i, j];
-                        double Cjj = det.matrix[j, j];
-                        for (int k = 0; k < det.getCols(); k++)
+                        double Cij = matrix[i, j];
+                        double Cjj = matrix[j, j];
+                        for (int k = 0; k < getCols(); k++)
                         {
-                            meg[i,k] = det.matrix[i, k] - (det.matrix[j, k] * (Cij / Cjj));
+                            meg[i, k] = matrix[i, k] - (matrix[j, k] * (Cij / Cjj));
                         }
                     }
                 }
@@ -478,6 +467,15 @@ namespace Project_1
 
             return determinant;
         }
+
+    }    
+ public class ProjectOne
+    {
+        private static String dataFile = Directory.GetCurrentDirectory().ToString() + "\\p1data.txt";
+
+        private static List<Matrix> class1 = new List<Matrix>();
+        private static List<Matrix> class2 = new List<Matrix>();
+
 
         public static void Main(String[] args)
         {
@@ -574,8 +572,8 @@ namespace Project_1
             Console.WriteLine("The covariance matrix for class 2:");
             cov2.printMatrix();
 
-            double cov1Determinant = findDeterminant(cov1);
-            double cov2Determinant = findDeterminant(cov2);
+            double cov1Determinant = cov1.findDeterminant();
+            double cov2Determinant = cov2.findDeterminant();
 
             Console.WriteLine("\n");
             Console.WriteLine("Determinant of Covariance Matrix 1:" + cov1Determinant);
@@ -668,10 +666,10 @@ namespace Project_1
                 answer1 -= last_half;
 
                 g2 = class1[i].subtract(m2);
-                g2 = g2.transpose();
-                g2 = cov2Inverse.multiply(g2);
-                g2 = g2.multiply(class1[i].subtract(m2));
                 g2 = g2.multiply(-0.5);
+                g2 = g2.multiply(cov2Inverse);
+                g2 = g2.multiply(class1[i].subtract(m2).transpose());
+                
                 answer2 = g2.getVal(0, 0);
                 last_half = (0.5*Math.Log(cov2Determinant));
                 last_half += Math.Log(0.5);
@@ -695,20 +693,20 @@ namespace Project_1
             for (int i = 0; i < class2.Count; i++)
             {
                 g2 = class2[i].subtract(m2);
-                g2 = g2.transpose();
-                g2 = cov2Inverse.multiply(g2);
-                g2= g2.multiply(class2[i].subtract(m2));
                 g2 = g2.multiply(-0.5);
+                g2 = g2.multiply(cov2Inverse);
+                g2= g2.multiply(class2[i].subtract(m2).transpose());
+                
                 answer1 = g2.getVal(0, 0);
                 last_half = (Math.Log(cov2Determinant));
                 last_half += Math.Log(0.5);
                 answer1 -= last_half;
 
                 g1 = class2[i].subtract(m1);
-                g1 = g1.transpose();
-                g1 = cov1Inverse.multiply(g1);
-                g1 = g1.multiply(class2[i].subtract(m1));
                 g1 = g1.multiply(-0.5);
+                g1 = g1.multiply(cov1Inverse);
+                g1 = g1.multiply(class2[i].subtract(m1).transpose());
+                
                 answer2 = g1.getVal(0, 0);
                 last_half =(Math.Log(cov1Determinant));
                 last_half += Math.Log(0.5);
@@ -773,24 +771,21 @@ namespace Project_1
             s2 = s1.gaussJordan(s2);
             s2.printMatrix();
             Console.WriteLine("\n");
-            s1det = findDeterminant(s1);
-            Console.WriteLine("Determinant of System of Equations is:" + s1det);
+            s1det = s1.findDeterminant();
+            Console.WriteLine("Determinant of System of Equations is: " + s1det);
             s2 = s1.findInverse();
             Console.WriteLine("\n");
             Console.WriteLine("Inverse of System is:");
             s2.printMatrix();
             Console.ReadKey();
-            s2det = findDeterminant(s2);
+            s2det = s2.findDeterminant();
             Console.WriteLine("The determinant inverse is: " + s2det);
             s2 = s2.multiply(s2det);
             Console.WriteLine("The product of the determinant of the system and it's inverse is: " + (s1det * s2det));
             Console.ReadKey();
 
 
-            //just put the fucking numbers back in here for god's sake.  Mother fucker won't stop changing values.
-            double[,] sys3 = { { 2, 1, -1, -1, 1, 0, -1, -1 }, { 1, 0, 2, 0, -1, -2, 2, 2 }, { 0, -2, 5, 4, -1, 0, 3, 1 }, { 1, 1, -7, 3, 2, 1, -1, 0 }, { 1, 1, 2, 3, -2, 2, 2, 9 }, { 0, -3, -2, 2, 0, 2, 4, -5 }, { -2, 5, -1, 1, 1, 3, 0, -2 }, { 1, 0, 1, 1, 0, 2, 1, 1 } };
-
-            Matrix condmat1 = new Matrix(sys3);
+            Matrix condmat1 = new Matrix(sys1);
             Matrix condmat2 = condmat1.findInverse(); 
             condmat2 = s1.findInverse();
             Double cond1 = 0;
