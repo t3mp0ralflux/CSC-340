@@ -399,15 +399,11 @@ namespace Project_1
             return new Matrix(temp);
 
         }
+
         public double findDeterminant()
         {
-            int p;
-            int r = 0;
-            double determinant = 0;
-
-            // augment current matrix with the values
-            //had to add meg as this thing wouldn't stop passing by ref instead of value
             double[,] meg = new double[getRows(), getCols()];
+            //establish the meg
             for (int i = 0; i < getRows(); i++)
             {
                 for (int j = 0; j < getCols(); j++)
@@ -415,59 +411,23 @@ namespace Project_1
                     meg[i, j] = getVal(i, j);
                 }
             }
-
-            for (int j = 0; j < getRows(); j++)
-            {
-                p = j;
-
-                // loop through each row and find the pivot
-                for (int i = 0; i < getRows(); i++)
+            //meg established
+                double det = 0;
+                for (int i = 0; i < getRows(); i++)  //iterate through each row
                 {
-
-                    // look at the absolute value of the pivot and see if it is larger than current pivot
-                    // if so, make that the new pivot
-                    if (Math.Abs(matrix[p, j]) < Math.Abs(matrix[i, j]))
+                    for (int j = i + 1; j < getRows(); j++)  //utilize through every other row
                     {
-                        p = i;
+                        det = meg[j, i] / meg[i, i];  //divides row below by current row at
+                    for (int k = i; k < getRows(); k++)  //moves as i increases, creating the zero's in triangle
+                        meg[j, k] = meg[j, k] - det * meg[i, k];  //multiplies row beneath by the division above.
                     }
                 }
-
-                // interchange if the pivot is below row j
-                if (p > j)
-                {
-                    interchange(j, p);
-                    r++;
-                }
-
+                det = 1;
                 for (int i = 0; i < getRows(); i++)
-                {
-                    if (i > j)
-                    {
-                        double Cij = matrix[i, j];
-                        double Cjj = matrix[j, j];
-                        for (int k = 0; k < getCols(); k++)
-                        {
-                            meg[i, k] = matrix[i, k] - (matrix[j, k] * (Cij / Cjj));
-                        }
-                    }
-                }
-
-            }
-
-            // initialize determinant to the value in C00
-            determinant = meg[0, 0];
-            // then multiply down the diagonal
-            for (int i = 1; i < meg.GetLength(0); i++)
-            {
-                determinant = determinant * meg[i, i];
-            }
-
-            // put the negative/positive sign if needed
-            determinant = determinant * Math.Pow((-1), r);
-
-            return determinant;
+                    det = det * meg[i, i];  //finishes out multiplication
+                return det;
+            
         }
-
     }    
  public class ProjectOne
     {
@@ -740,7 +700,6 @@ namespace Project_1
                 outcast2[i].printMatrix();
             }
             Console.ReadKey();
-            //above was the analysis.
 
             Console.WriteLine("The boundary points of Class 1 are: ");
             for(int i=0; i<boundary1.Count; i++)
@@ -795,18 +754,20 @@ namespace Project_1
             {
                 for(int j=0; j<condmat1.getCols(); j++)
                 {
-                    sys1cond[0, j] += Math.Abs(condmat1.getVal(i, j));
+                    sys1cond[0, i] += (condmat1.getVal(i, j));
 
                 }
+                sys1cond[0, i] = Math.Abs(sys1cond[0, i]);
             }
 
             for (int i = 0; i < condmat2.getRows(); i++)
             {
-                for (int j = 0; j < condmat2.getCols(); j++)
+                for (int j = 0; j < condmat2.getRows(); j++)
                 {
-                    sys2cond[0, j] += Math.Abs(condmat2.getVal(i, j));
+                    sys2cond[0, i] += (condmat2.getVal(i, j));
 
                 }
+                sys2cond[0, i] = Math.Abs(sys2cond[0, i]);
             }
             for(int i=0; i<sys1cond.Length; i++)
             {
