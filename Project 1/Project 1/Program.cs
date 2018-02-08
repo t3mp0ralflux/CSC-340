@@ -419,70 +419,57 @@ namespace Project_1
         private static List<Matrix> class1 = new List<Matrix>();
         private static List<Matrix> class2 = new List<Matrix>();
 
-
-        public static void Main(String[] args)
+        public static void Import(List<Matrix> class1, List<Matrix> class2)
         {
             String currentLine = "";
 
             var sr = new StreamReader(dataFile, Encoding.UTF8, true, 128);
-            
+
             //skips N number of lines
-            for(int n = 0; n < 2; n++)
+            for (int n = 0; n < 2; n++)
             {
                 sr.ReadLine();
             }
-            while((currentLine = sr.ReadLine()) != null)
+            while ((currentLine = sr.ReadLine()) != null)
             {
-               // currentLine = sr.ReadLine();
+                // currentLine = sr.ReadLine();
                 string[] line = currentLine.Split('\t');
-                double[,] matrix1 = new double[1,2];
-                double[,] matrix2 = new double[1,2];
-                matrix1[0,0] = Double.Parse(line[0]);
-                matrix1[0,1] = Double.Parse(line[1]);
+                double[,] matrix1 = new double[1, 2];
+                double[,] matrix2 = new double[1, 2];
+                matrix1[0, 0] = Double.Parse(line[0]);
+                matrix1[0, 1] = Double.Parse(line[1]);
                 class1.Add(new Matrix(matrix1));
-                matrix2[0,0] = Double.Parse(line[2]);
-                matrix2[0,1] = Double.Parse(line[3]);
+                matrix2[0, 0] = Double.Parse(line[2]);
+                matrix2[0, 1] = Double.Parse(line[3]);
                 class2.Add(new Matrix(matrix2));
             }
 
             sr.Close();
+        }
 
+        public static Matrix Mean(List<Matrix> class1)
+        {
             Matrix m1 = class1[0];
-            Matrix m2 = class2[0];
-            
-            for(int i=1; i < class1.Count; i++)
+
+            for (int i = 1; i < class1.Count; i++)
             {
                 m1 = m1.add(class1[i]);
             }
 
             m1 = m1.multiply(1.0 / class1.Count);
 
-            Console.WriteLine("Mean Vector 1:");
-            m1.printMatrix();
+            return m1;
+        }
 
-            for(int i=1;i<class2.Count; i++)
-            {
-                m2 = m2.add(class2[i]);
-            }
-
-            m2 = m2.multiply(1.0 / class2.Count);
-
-            Console.WriteLine("\n");
-            Console.WriteLine("Mean Vector 2:");
-            m2.printMatrix();
-
+        public static Matrix Covariance(List<Matrix> class1, Matrix m1)
+        {
             Matrix cov1;
             Matrix cov1transpose;
-            Matrix cov2;
-            Matrix cov2transpose;
+
 
             cov1 = class1[0].subtract(m1);
             cov1transpose = cov1.transpose();
             cov1 = cov1transpose.multiply(cov1);
-
-            cov2 = class2[0].subtract(m2);
-            cov2transpose = cov2.transpose();
-            cov2 = cov2transpose.multiply(cov2);
 
             for (int i = 1; i < class1.Count; i++)
             {
@@ -494,18 +481,59 @@ namespace Project_1
                 cov1 = cov1.add(temp1);
             }
 
-            for (int i = 1; i < class2.Count; i++)
-            {
-                Matrix temp2 = class2[i];
-                Matrix temp2transpose;
-                temp2 = temp2.subtract(m2);
-                temp2transpose = temp2.transpose();
-                temp2 = temp2transpose.multiply(temp2);
-                cov2 = cov2.add(temp2);
-            }
-
             cov1 = cov1.multiply(1.0 / class1.Count);
-            cov2 = cov2.multiply(1.0 / class2.Count);
+
+            return cov1;
+        }
+
+        public static double MeanEval(Matrix cov1Inverse, Matrix cov2Inverse, Matrix mThis, Matrix mOther)
+        {
+            {
+                Matrix g1, g2;
+
+                g1 = mThis.subtract(mThis);
+                g1 = g1.transpose();
+                g1 = cov1Inverse.multiply(g1);
+                g1 = g1.multiply(mThis.subtract(mThis));
+                g1 = g1.multiply(-0.5);
+
+                g2 = mThis.subtract(mOther);
+                g2 = g2.transpose();
+                g2 = cov2Inverse.multiply(g2);
+                g2 = g2.multiply(mThis.subtract(mOther));
+                g2 = g2.multiply(-0.5);
+
+                if (g1.getVal(0, 0) > g2.getVal(0, 0))
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+        public static void Main(String[] args)
+        {
+            Matrix m1, m2, cov1, cov2, g1, g2;
+            double mean1Spot, mean2Spot, answer1, answer2, last_half;
+            List<Matrix> outcast1, outcast2, boundary1, boundary2;
+            outcast1 = outcast2 = boundary1 = boundary2 = new List<Matrix>();
+            Double epsilon = 0.01;
+            Double scale = 0.005;
+            Double mag = 0;
+
+            Import(class1, class2);
+            m1 = Mean(class1);
+            Console.WriteLine("Mean Vector 1:");
+            m1.printMatrix();
+
+            m2 = Mean(class2);
+            Console.WriteLine("Mean Vector 2:");
+            m2.printMatrix();
+
+            cov1 = Covariance(class1, m1);
+            cov2 = Covariance(class2, m2);
 
             Console.WriteLine("\n");
             Console.WriteLine("The covariance matrix for class 1:");
@@ -521,7 +549,6 @@ namespace Project_1
             Console.WriteLine("\n");
             Console.WriteLine("Determinant of Covariance Matrix 1:" + cov1Determinant);
             Console.WriteLine("Determinant of Covariance Matrix 2:" + cov2Determinant);
-            
 
             Matrix cov1Inverse = cov1.findInverse();
             Matrix cov2Inverse = cov2.findInverse();
@@ -532,70 +559,28 @@ namespace Project_1
             cov2Inverse.printMatrix();
             Console.ReadKey();
             //next is to do the analysis of the two and categorize the points
-
-            Matrix g1;
-            Matrix g2;
-            double answer1;
-            double answer2;
-            double last_half;
-            List<Matrix> outcast1 = new List<Matrix>();
-            List<Matrix> outcast2 = new List<Matrix>();
-            List<Matrix> boundary1 = new List<Matrix>();
-            List<Matrix> boundary2 = new List<Matrix>();
-            Double epsilon = 0.01;
-            Double scale = 0.005;
-            Double mag = 0;
-
+            mean1Spot = MeanEval(cov1Inverse, cov2Inverse, m1, m2);
+            mean2Spot = MeanEval(cov1Inverse, cov2Inverse, m2, m1);
+            if (mean1Spot > 0)
             {
-                g1 = m1.subtract(m1);
-                g1 = g1.transpose();
-                g1 = cov1Inverse.multiply(g1);
-                g1 = g1.multiply(m1.subtract(m1));
-                g1 = g1.multiply(-0.5);
-
-                g2 = m1.subtract(m2);
-                g2 = g2.transpose();
-                g2 = cov2Inverse.multiply(g2);
-                g2 = g2.multiply(m1.subtract(m2));
-                g2 = g2.multiply(-0.5);
-
-                if (g1.getVal(0, 0) > g2.getVal(0, 0))
-                {
-
-                    Console.WriteLine("m1 was classified into class 1");
-                }
-                else
-                {
-                    Console.WriteLine("m1 was classified into class 2");
-                }
+                Console.WriteLine("M1 was placed in Class 1");
+            }
+            else
+            {
+                Console.WriteLine("M1 was placed in Class 2");
+            }
+            if (mean2Spot > 0)
+            {
+                Console.WriteLine("M2 was placed in Class 2");
+            }
+            else
+            {
+                Console.WriteLine("M2 was placed in Class 1");
             }
 
-            {
-                g1 = m2.subtract(m2);
-                g1 = g1.transpose();
-                g1 = cov2Inverse.multiply(g1);
-                g1 = g1.multiply(m2.subtract(m2));
-                g1 = g1.multiply(-0.5);
-
-                g2 = m2.subtract(m1);
-                g2 = g2.transpose();
-                g2 = cov1Inverse.multiply(g2);
-                g2 = g2.multiply(m2.subtract(m1));
-                g2 = g2.multiply(-0.5);
-
-                if (g1.getVal(0, 0) > g2.getVal(0, 0))
-                {
-
-                    Console.WriteLine("m2 was classified into class 2");
-                }
-                else
-                {
-                    Console.WriteLine("m2 was classified into class 1");
-                }
-            }
             Console.ReadKey();
-            g1 = null;
-            g2 = null;
+
+
             for (int i = 0; i < class1.Count; i++)
             {
                 g1 = class1[i].subtract(m1);
@@ -745,19 +730,21 @@ namespace Project_1
 
             for (int i = 0; i < condmat2.getRows(); i++)
             {
-                for (int j = 0; j < condmat2.getRows(); j++)
+                for (int j = 0; j < condmat2.getCols(); j++)
                 {
                     sys2cond[0, i] += (condmat2.getVal(i, j));
-
                 }
                 sys2cond[0, i] = Math.Abs(sys2cond[0, i]);
             }
+
             for(int i=0; i<sys1cond.Length; i++)
             {
                 if (sys1cond[0,i] > cond1)
                 {
-                    cond1 = sys1cond[0, i];                }
+                    cond1 = sys1cond[0, i];
+                }
             }
+
             for (int i = 0; i < sys2cond.Length; i++)
             {
                 if (sys2cond[0, i] > cond2)
