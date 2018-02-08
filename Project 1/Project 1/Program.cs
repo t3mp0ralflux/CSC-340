@@ -190,23 +190,6 @@ namespace Project_1
             return new Matrix(newMatrix);
         }
 
-        public double trace()
-        {
-            if (getRows() != getCols())
-            {
-                Console.Write("Not a square matrix, returning 0");
-                return 0;
-            }
-            double sum = 0;
-            for (int i = 0; i < getRows(); i++)
-            {
-                sum += matrix[i,i];
-            }
-
-            return sum;
-
-        }
-
         public Matrix gaussJordan(Matrix b)
         {
             int e = 1;
