@@ -1,0 +1,109 @@
+        //public double trace()
+        //{
+        //    if (getRows() != getCols())
+        //    {
+        //        Console.Write("Not a square matrix, returning 0");
+        //        return 0;
+        //    }
+        //    double sum = 0;
+        //    for (int i = 0; i < getRows(); i++)
+        //    {
+        //        sum += matrix[i,i];
+        //    }
+
+        //    return sum;
+
+        //}
+
+// returns a matrix with the solns
+        public double[] gaussianElim(Matrix b)
+        {
+            int _E = 1;
+            int p;
+
+            // augment current matrix with the values
+            Matrix C = augment(b);
+
+            for (int j = 0; j < C.getRows(); j++)
+            {
+                p = j;
+
+                // loop through each row and find the pivot
+                for (int i = 0; i < C.getRows(); i++)
+                {
+
+                    // look at the absolute value of the pivot and see if it is larger than current pivot
+                    // if so, make that the new pivot
+                    if (Math.Abs(C.matrix[p,j]) < Math.Abs(C.matrix[i,j]))
+                    {
+                        p = i;
+                    }
+                }
+
+                // if an entire column is zeroes, return 0. no unique soln
+                if (C.matrix[p,j] == 0)
+                {
+                    _E = 0;
+                }
+
+                // interchange if the pivot is below row j
+                if (p > j)
+                {
+                    C.interchange(j, p);
+                }
+
+                // divide the row by the leading coefficient
+                C.rowMultiply(j, (1.0 / C.getVal(j, j)));
+
+                for (int i = 0; i < C.getRows(); i++)
+                {
+                    if (i > j)
+                    {
+                        double Cij = C.matrix[i,j];
+                        double Cjj = C.matrix[j,j];
+                        for (int k = 0; k < C.getCols(); k++)
+                        {
+                            C.matrix[i,k] = C.matrix[i,k] - (C.matrix[j,k] * (Cij / Cjj));
+                        }
+                    }
+                }
+
+            }
+
+            // return null if no unique soln
+            if (_E == 0)
+                return null;
+
+            // create partitions D and e
+            double[,] D = new double[C.getRows(),C.getCols() - 1];
+            double[,] e = new double[C.getRows(),1];
+
+            // populate the partitions
+            for (int i = 0; i < C.getRows(); i++)
+            {
+                for (int j = 0; j < C.getCols() - 1; j++)
+                {
+                    D[i,j] = C.getVal(i, j);
+                }
+            }
+
+            // populate the partitions
+            for (int i = 0; i < e.Length; i++)
+                e[i,0] = C.getVal(i, C.getCols() - 1);
+
+            double[] x = new double[C.getRows()];
+            double sum;
+
+            // back substitution
+            for (int j = D.Length - 1; j >= 0; j--)
+            {
+                sum = 0;
+                for (int i = j + 1; i < D.Length; i++)
+                {
+                    sum = sum + (D[j,i] * x[i]);
+                }
+                x[j] = (e[j,0] - sum) / D[j,j];
+            }
+
+            return x;
+        }

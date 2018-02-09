@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Written by Brenton Belanger.
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -7,7 +9,7 @@ using System.Text;
 // THE ENTIRE PROJECT RUNS UNDER Matrix[ROWS, COLUMNS]
 namespace Project_1
 {
-      public class Matrix
+    public class Matrix
     {
         public double[,] matrix;
 
@@ -248,100 +250,6 @@ namespace Project_1
                 return C;
         }
 
-
-        // returns a matrix with the solns
-        public double[] gaussianElim(Matrix b)
-        {
-            int _E = 1;
-            int p;
-
-            // augment current matrix with the values
-            Matrix C = augment(b);
-
-            for (int j = 0; j < C.getRows(); j++)
-            {
-                p = j;
-
-                // loop through each row and find the pivot
-                for (int i = 0; i < C.getRows(); i++)
-                {
-
-                    // look at the absolute value of the pivot and see if it is larger than current pivot
-                    // if so, make that the new pivot
-                    if (Math.Abs(C.matrix[p,j]) < Math.Abs(C.matrix[i,j]))
-                    {
-                        p = i;
-                    }
-                }
-
-                // if an entire column is zeroes, return 0. no unique soln
-                if (C.matrix[p,j] == 0)
-                {
-                    _E = 0;
-                }
-
-                // interchange if the pivot is below row j
-                if (p > j)
-                {
-                    C.interchange(j, p);
-                }
-
-                // divide the row by the leading coefficient
-                C.rowMultiply(j, (1.0 / C.getVal(j, j)));
-
-                for (int i = 0; i < C.getRows(); i++)
-                {
-                    if (i > j)
-                    {
-                        double Cij = C.matrix[i,j];
-                        double Cjj = C.matrix[j,j];
-                        for (int k = 0; k < C.getCols(); k++)
-                        {
-                            C.matrix[i,k] = C.matrix[i,k] - (C.matrix[j,k] * (Cij / Cjj));
-                        }
-                    }
-                }
-
-            }
-
-            // return null if no unique soln
-            if (_E == 0)
-                return null;
-
-            // create partitions D and e
-            double[,] D = new double[C.getRows(),C.getCols() - 1];
-            double[,] e = new double[C.getRows(),1];
-
-            // populate the partitions
-            for (int i = 0; i < C.getRows(); i++)
-            {
-                for (int j = 0; j < C.getCols() - 1; j++)
-                {
-                    D[i,j] = C.getVal(i, j);
-                }
-            }
-
-            // populate the partitions
-            for (int i = 0; i < e.Length; i++)
-                e[i,0] = C.getVal(i, C.getCols() - 1);
-
-            double[] x = new double[C.getRows()];
-            double sum;
-
-            // back substitution
-            for (int j = D.Length - 1; j >= 0; j--)
-            {
-                sum = 0;
-                for (int i = j + 1; i < D.Length; i++)
-                {
-                    sum = sum + (D[j,i] * x[i]);
-                }
-                x[j] = (e[j,0] - sum) / D[j,j];
-            }
-
-            return x;
-        }
-
         // find the inverse matrix
         public Matrix findInverse()
         {
@@ -412,7 +320,8 @@ namespace Project_1
             
         }
     }    
- public class ProjectOne
+
+    public class ProjectOne
     {
         private static String dataFile = Directory.GetCurrentDirectory().ToString() + "\\p1data.txt";
 
@@ -513,15 +422,68 @@ namespace Project_1
                 }
             }
         }
+
+        public static void discriminant(List<Matrix> thisClass, ref List<Matrix> thisOutcast, ref List<Matrix> thisBoundary, Matrix thisCovInverse, Double thisCovDeterminant, Matrix thatCovInverse, Double thatCovDeterminant, Matrix thisMean, Matrix thatMean)
+        {
+                double answer1;
+                double answer2;
+                double last_half;
+                Matrix g1;
+                Matrix g2;
+                double scale = 0.005;
+                double mag;
+                double epsilon = 0.01;
+
+            for (int i = 0; i < thisClass.Count; i++)
+            {
+                
+
+                g1 = thisClass[i].subtract(thisMean);
+                g1 = g1.multiply(-0.5);
+                g1 = g1.multiply(thisCovInverse);
+                g1 = g1.multiply(thisClass[i].subtract(thisMean).transpose());
+
+                answer1 = g1.getVal(0, 0);
+                last_half = (0.5 * Math.Log(thisCovDeterminant));
+                last_half += Math.Log(0.5);
+                answer1 -= last_half;
+
+                g2 = thisClass[i].subtract(thatMean);
+                g2 = g2.multiply(-0.5);
+                g2 = g2.multiply(thatCovInverse);
+                g2 = g2.multiply(thisClass[i].subtract(thatMean).transpose());
+
+                answer2 = g2.getVal(0, 0);
+                last_half = (0.5 * Math.Log(thatCovDeterminant));
+                last_half += Math.Log(0.5);
+                answer2 -= last_half;
+
+                if (answer1 < answer2)
+                {
+
+                    thisOutcast.Add(thisClass[i]);
+                    Console.WriteLine("Point " + i + "G1: " + answer1);
+                    Console.WriteLine("Point " + i + "G2: " + answer2);
+                }
+                answer1 *= scale;
+                answer2 *= scale;
+                mag = Math.Abs(answer1 - answer2);
+                if (mag < epsilon)
+                {
+                    thisBoundary.Add(thisClass[i]);
+                }
+            }
+        }
+
         public static void Main(String[] args)
         {
-            Matrix m1, m2, cov1, cov2, g1, g2;
-            double mean1Spot, mean2Spot, answer1, answer2, last_half;
-            List<Matrix> outcast1, outcast2, boundary1, boundary2;
-            outcast1 = outcast2 = boundary1 = boundary2 = new List<Matrix>();
-            Double epsilon = 0.01;
-            Double scale = 0.005;
-            Double mag = 0;
+            Matrix m1, m2, cov1, cov2;
+            double mean1Spot, mean2Spot;
+            List<Matrix> outcast1 = new List<Matrix>();
+            List<Matrix> outcast2 = new List<Matrix>();
+            List<Matrix> boundary1 = new List<Matrix>();
+            List<Matrix> boundary2 = new List<Matrix>();
+
 
             Import(class1, class2);
             m1 = Mean(class1);
@@ -580,82 +542,10 @@ namespace Project_1
 
             Console.ReadKey();
 
+            discriminant(class1, ref outcast1, ref boundary1, cov1Inverse, cov1Determinant, cov2Inverse, cov2Determinant, m1, m2);
 
-            for (int i = 0; i < class1.Count; i++)
-            {
-                g1 = class1[i].subtract(m1);
-                g1 = g1.multiply(-0.5);
-                g1 = g1.multiply(cov1Inverse);
-                g1 = g1.multiply(class1[i].subtract(m1).transpose());
-                
-                answer1 = g1.getVal(0, 0);
-                last_half = (0.5*Math.Log(cov1Determinant));
-                last_half += Math.Log(0.5);
-                answer1 -= last_half;
-
-                g2 = class1[i].subtract(m2);
-                g2 = g2.multiply(-0.5);
-                g2 = g2.multiply(cov2Inverse);
-                g2 = g2.multiply(class1[i].subtract(m2).transpose());
-                
-                answer2 = g2.getVal(0, 0);
-                last_half = (0.5*Math.Log(cov2Determinant));
-                last_half += Math.Log(0.5);
-                answer2 -= last_half;
-
-                if (answer1 < answer2){
-
-                    outcast1.Add(class1[i]);
-                    Console.WriteLine("Point " + i + "G1: " + answer1);
-                    Console.WriteLine("Point " + i + "G2: " + answer2);
-                }
-                answer1 *= scale;
-                answer2 *= scale;
-                mag = Math.Abs(answer1 - answer2);
-                if (mag < epsilon)
-                {
-                    boundary1.Add(class1[i]);
-                }
-            }
-
-            for (int i = 0; i < class2.Count; i++)
-            {
-                g2 = class2[i].subtract(m2);
-                g2 = g2.multiply(-0.5);
-                g2 = g2.multiply(cov2Inverse);
-                g2= g2.multiply(class2[i].subtract(m2).transpose());
-                
-                answer1 = g2.getVal(0, 0);
-                last_half = (Math.Log(cov2Determinant));
-                last_half += Math.Log(0.5);
-                answer1 -= last_half;
-
-                g1 = class2[i].subtract(m1);
-                g1 = g1.multiply(-0.5);
-                g1 = g1.multiply(cov1Inverse);
-                g1 = g1.multiply(class2[i].subtract(m1).transpose());
-                
-                answer2 = g1.getVal(0, 0);
-                last_half =(Math.Log(cov1Determinant));
-                last_half += Math.Log(0.5);
-                answer2 -= last_half;
-
-                if (answer1 < answer2)
-                {
-
-                    outcast2.Add(class2[i]);
-                    Console.WriteLine("Point " + i + "G2:" + answer1);
-                    Console.WriteLine("Point " + i + "G1:" + answer2);
-                }
-                answer1 *= scale;
-                answer2 *= scale;
-                mag = Math.Abs(answer1 - answer2);
-                if (mag < epsilon)
-                {
-                    boundary2.Add(class2[i]);
-                }
-            }
-
+            discriminant(class2, ref outcast2, ref boundary2, cov2Inverse, cov2Determinant, cov1Inverse, cov1Determinant, m2, m1);
+            
             Console.WriteLine("The error points in class 1 are:");
             for (int i = 0; i < outcast1.Count; i++)
             {
@@ -722,21 +612,20 @@ namespace Project_1
             {
                 for(int j=0; j<condmat1.getCols(); j++)
                 {
-                    sys1cond[0, i] += (condmat1.getVal(i, j));
+                    sys1cond[0, i] += Math.Abs(condmat1.getVal(i, j));
 
                 }
-                sys1cond[0, i] = Math.Abs(sys1cond[0, i]);
+                sys1cond[0, i] = (sys1cond[0, i]);
             }
 
-            for (int i = 0; i < condmat2.getRows(); i++)
+            for (int i = 0; i<condmat2.getRows(); i++)
             {
                 for (int j = 0; j < condmat2.getCols(); j++)
                 {
-                    sys2cond[0, i] += (condmat2.getVal(i, j));
+                    sys2cond[0, i] += Math.Abs(condmat2.getVal(i, j));
                 }
-                sys2cond[0, i] = Math.Abs(sys2cond[0, i]);
+                sys2cond[0, i] = (sys2cond[0, i]);
             }
-
             for(int i=0; i<sys1cond.Length; i++)
             {
                 if (sys1cond[0,i] > cond1)
@@ -744,7 +633,6 @@ namespace Project_1
                     cond1 = sys1cond[0, i];
                 }
             }
-
             for (int i = 0; i < sys2cond.Length; i++)
             {
                 if (sys2cond[0, i] > cond2)
