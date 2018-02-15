@@ -24,7 +24,7 @@ namespace Project_1
             var sr = new StreamReader(dataFile, Encoding.UTF8, true, 128);
 
             //skips N number of lines
-            for (int n = 0; n < 1; n++)
+            for (int n = 0; n < 2; n++)
             {
                 sr.ReadLine();
             }
@@ -100,32 +100,65 @@ namespace Project_1
             Console.WriteLine("Eigenvalue 1: " + e1);
             Console.WriteLine("Eigenvalue 2: " + e2);
 
-            double[,] sys1 = { { 0 }, { 0 } };
-            //Matrix lamdaI;
-            //Matrix A = cov.deepcopy();
-            //Matrix B;
-            //Matrix augment = new Matrix(sys1);
-            //lamdaI = cov.identity();
-            //lamdaI.multiply(e1);
-            //A.subtract(lamdaI);
-            //A.gaussianElim(augment);
+           // double[,] sys1 = new double[cov.getRows(), 1];
+           // Matrix lamdaI;
+           // Matrix A = cov.deepcopy();
+           //// Matrix B;
+           // Matrix augment = new Matrix(sys1);
+           // lamdaI = cov.identity();
+           // lamdaI.multiply(e1);
+           // A.subtract(lamdaI);
+           // A.gaussJordan(augment);
+            
+           // A.printMatrix();
             Matrix B = eigenvector(cov, e1);
+            Console.WriteLine("Eigenvector for e1: ");
+            B.printMatrix();
             Console.ReadKey();
 
         }
 
         public static Matrix eigenvector(Matrix cov, double e1)
         {
-            double[,] sys1 = new Double[cov.getRows(), 1];
-            Matrix lamdaI;
-            Matrix A = cov.deepcopy();
-            Matrix augment = new Matrix(sys1);
-            lamdaI = cov.identity();
-            lamdaI.multiply(e1);
-            A.subtract(lamdaI);
-            A.gaussianElim(augment);
+            //double[,] sys1 = new Double[cov.getRows(), 1];
+            //Matrix lamdaI;
+            //Matrix A = cov.deepcopy();
+            //Matrix augment = new Matrix(sys1);
+            //lamdaI = cov.identity();
+            //lamdaI.multiply(e1);
+            //A.subtract(lamdaI);
+            //A.gaussianElim(augment);
+            {
+                Matrix B = cov.deepcopy();
+                double a = B.getVal(0, 0);
+                double b = B.getVal(0, 1);
+                double d = B.getVal(1, 1);
+                double[,] songs = new double[2, 2];
+                int i = 0;
 
-            return A;
+                if (b == 0)
+                {
+                    songs[0, 0] = songs[1, 1] = 1;
+                    songs[0, 1] = songs[1, 0] = 0;
+                    return new Matrix(songs);
+                }
+
+                double[,] bass = { { a - e1, b }, { b, d - e1 } };
+
+                //double[] rone = {-b,bass[0,0]};
+                songs[0, 0] = -b;
+                songs[1, 0] = bass[0, 0];
+                double mag = Math.Sqrt((songs[1, 0] * songs[1, 0]) + (songs[0, 0] * songs[0, 0]));
+                songs[0, 0] /= mag;
+                songs[1, 0] /= mag;
+
+                songs[0, 1] = -songs[1, 0];
+                songs[1, 1] = songs[0, 0];
+
+                return new Matrix(songs);
+            }
+
+            //return A;
         }
 
         public static double normalize(Matrix one)

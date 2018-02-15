@@ -46,6 +46,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Project2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Trip.cs" />
+    <Compile Include="TSPExhaust.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
