@@ -52,7 +52,7 @@ namespace Project_1
         static int[] val;
         static int now = -1;
 
-        static int V = 14;
+        static int V = 6;
         static int count = 0;
 
         //number of trips created
@@ -60,94 +60,99 @@ namespace Project_1
         static double sumOfDist = 0;
         static double sumSqdDist = 0;
 
-//        public static void Main(String[] args){
+        public static void Main(String[] args)
+        {
 
-//		Matrix mean = list[0];
+            //Matrix mean = list[0];
 
-//		for (int i = 1; i<list.Count(); i++) {
-//			mean = mean.add(list[i]);
-//		}
+            //for (int i = 1; i < list.Count(); i++)
+            //{
+            //    mean = mean.add(list[i]);
+            //}
 
-//        mean = mean.multiply(1.0/list.Count());
-//		mean.printMatrix();
+            //mean = mean.multiply(1.0 / list.Count());
+            //mean.printMatrix();
 
-//	//	Console.WriteLine("x=" + (x/count) + "y=" + (y/count));
+            ////	Console.WriteLine("x=" + (x/count) + "y=" + (y/count));
 
-//		// covariance matrix calculation
-//		Matrix cov1;
+            //// covariance matrix calculation
+            //Matrix cov1;
 
-//        cov1 = list[0].subtract(mean);
-//        cov1 = cov1.multiply(cov1.transpose());
+            //cov1 = list[0].subtract(mean);
+            //cov1 = cov1.multiply(cov1.transpose());
 
-//		for (int i = 1; i<list.Count(); i++) {
-//			Matrix temp = list[i];
-//            temp = temp.subtract(mean);
-//			temp = temp.multiply(temp.transpose());
-//			cov1 = cov1.add(temp);
-//		}
+            //for (int i = 1; i < list.Count(); i++)
+            //{
+            //    Matrix temp = list[i];
+            //    temp = temp.subtract(mean);
+            //    temp = temp.multiply(temp.transpose());
+            //    cov1 = cov1.add(temp);
+            //}
 
-//		cov1 = cov1.multiply(1.0/list.Count());
-//		cov1.printMatrix();
+            //cov1 = cov1.multiply(1.0 / list.Count());
+            //cov1.printMatrix();
 
-//		Console.WriteLine("\n\n");
+            //Console.WriteLine("\n\n");
 
-//        Console.WriteLine("trace of covariance matrix is: " + Project2.trace(cov1));
-//        Console.WriteLine("determinant of cov matrix is: " + cov1.findDeterminant());
+            //Console.WriteLine("trace of covariance matrix is: " + Project2.trace(cov1));
+            //Console.WriteLine("determinant of cov matrix is: " + cov1.findDeterminant());
 
-//		Console.WriteLine("\n\n\n\n\n\n");
+            //Console.WriteLine("\n\n\n\n\n\n");
 
-//		//remove any garbage from the bin counter
-//		for (int i = 0; i<bins.Length; i++)
-//			bins[i] = 0;
-
-
-//        // used for exhaustive search
-//        // long startTime = System.currentTimeMillis();
-//        // getPerms();
-//        // long endTime = System.currentTimeMillis();
+            //remove any garbage from the bin counter
+            for (int i = 0; i < bins.Length; i++)
+                bins[i] = 0;
 
 
-//        /* this code was used to find the shortest and longest distance between cities
-//		   no reason to run it after finding the answers
-//		   double furthestDistance = 0;
-//		   double shortestDistance = 1000000; //arbitrary large value */
+            // used for exhaustive search
+            DateTime startTime = DateTime.Now;
+            getPerms();
+            DateTime endTime = DateTime.Now;
 
-//        // for (int i=0; i < shortest.cityList.size(); i++) {
-//        // 	for (int j=0; j < shortest.cityList.size(); j++) {
-//        // 		curr = shortest.cityDistance(shortest.cityList.get(i), shortest.cityList.get(j));
-//        // 		if (curr > furthestDistance && i != j)
-//        // 			furthestDistance = curr;
-//        // 		if (curr < shortestDistance && i != j)
-//        // 			shortestDistance = curr;
-//        // 	}
-//        // }
 
-//        randomSearch();
+            /* this code was used to find the shortest and longest distance between cities
+               no reason to run it after finding the answers */
+               double furthestDistance = 0;
+               double shortestDistance = 1000000; //arbitrary large value
 
-//double tripMean;
-//double stdDev;
+            for (int i = 0; i < shortest.cityList.Count(); i++)
+            {
+                for (int j = 0; j < shortest.cityList.Count(); j++)
+                {
+                    double curr = shortest.cityDistance(shortest.cityList[i], shortest.cityList[j]);
+                    if (curr > furthestDistance && i != j)
+                        furthestDistance = curr;
+                    if (curr < shortestDistance && i != j)
+                        shortestDistance = curr;
+                }
+            }
 
-//tripMean = sumOfDist / runs;
+            randomSearch();
 
-//		stdDev = sumSqdDist - Math.Pow(sumOfDist, 2) / runs;
-//		stdDev = Math.Sqrt(stdDev / (double)(runs - 1));
+            double tripMean;
+            double stdDev;
 
-//		Console.WriteLine("mean: " + tripMean + "\nstdDev: " + stdDev);
-//        Console.WriteLine("longest trip route: ");
-//        longest.printTrip();
-//		Console.WriteLine("longest trip length: " + longest.getTripLength());
-//		Console.WriteLine("shortest trip: ");
-//        shortest.printTrip();
-//		Console.WriteLine("shortest trip length: " + shortest.getTripLength());
+            tripMean = sumOfDist / runs;
 
-//		//System.out.println("\n\nduration: " + (endTime - startTime)/1000f + " seconds\n\n");
+            stdDev = sumSqdDist - Math.Pow(sumOfDist, 2) / runs;
+            stdDev = Math.Sqrt(stdDev / (double)(runs - 1));
 
-//		for (int i = 0; i<bins.Length; i++)
-//			Console.WriteLine(bins[i]);
+            Console.WriteLine("mean: " + tripMean + "\nstdDev: " + stdDev);
+            Console.WriteLine("longest trip route: ");
+            longest.printTrip();
+            Console.WriteLine("longest trip length: " + longest.getTripLength());
+            Console.WriteLine("shortest trip: ");
+            shortest.printTrip();
+            Console.WriteLine("shortest trip length: " + shortest.getTripLength());
 
-//	}
+            //System.out.println("\n\nduration: " + (endTime - startTime)/1000f + " seconds\n\n");
 
-	public static void getPerms()
+            for (int i = 0; i < bins.Length; i++)
+                Console.WriteLine(bins[i]);
+
+        }
+
+        public static void getPerms()
 {
     val = new int[V + 1];
     for (int i = 0; i <= V; i++)

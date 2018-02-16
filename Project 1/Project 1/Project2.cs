@@ -182,30 +182,30 @@ namespace Project_1
             return m_norm;
         }
 
-        public static void Main()
-        {
-            Matrix m1;
-            Matrix cov1;
-            double trace1;
-            double det1;
+       // public static void Main()
+       // {
+       //     Matrix m1;
+       //     Matrix cov1;
+       //     double trace1;
+       //     double det1;
 
-            Import(class1);
-            m1 = ProjectOne.Mean(class1);
-            cov1 = ProjectOne.Covariance(class1, m1);
-            trace1 = trace(cov1);
-            det1 = cov1.findDeterminant();
+       //     Import(class1);
+       //     m1 = ProjectOne.Mean(class1);
+       //     cov1 = ProjectOne.Covariance(class1, m1);
+       //     trace1 = trace(cov1);
+       //     det1 = cov1.findDeterminant();
 
-            Console.WriteLine("The mean of the eigendata: ");
-            m1.printMatrix();
-            Console.WriteLine("The Covariance Matrix for the eigendata: ");
-            cov1.printMatrix();
-            Console.WriteLine("The trace of the Covariance Matrix for the eigendata: " + trace1);
-            Console.WriteLine("The determinant of the Covariance Matrix: " + det1);
-            Console.ReadKey();
-            eigenvalues(cov1);
-       //     double[,] cof_m;
-            Console.ReadKey();
+       //     Console.WriteLine("The mean of the eigendata: ");
+       //     m1.printMatrix();
+       //     Console.WriteLine("The Covariance Matrix for the eigendata: ");
+       //     cov1.printMatrix();
+       //     Console.WriteLine("The trace of the Covariance Matrix for the eigendata: " + trace1);
+       //     Console.WriteLine("The determinant of the Covariance Matrix: " + det1);
+       //     Console.ReadKey();
+       //     eigenvalues(cov1);
+       ////     double[,] cof_m;
+       //     Console.ReadKey();
             
-        }
+       // }
     }
 }

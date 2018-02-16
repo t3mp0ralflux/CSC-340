@@ -12,23 +12,23 @@ namespace Project_1
 
         // initialize all of the cities
         private City dummy = new City("ERROR", 0, 0);
-        private City A = new City("A", .835291712, .917509743);
-        private City B = new City("B", .354055828, .428775989);
-        private City C = new City("C", .847944906, .422120483);
-        private City D = new City("D", .237885545, .208667108);
-        private City E = new City("E", .371568857, .130918266);
-        private City F = new City("F", .95200017, .963952421);
-        private City G = new City("G", .858567273, .691107499);
-        private City H = new City("H", .898640884, .227944792);
-        private City I = new City("I", .045393758, .505043543);
-        private City J = new City("J", .138167321, .522844999);
-        private City K = new City("K", .18830582, .352084188);
-        private City L = new City("L", .474768453, .967067497);
-        private City M = new City("M", .009079769, .408477785);
-        private City N = new City("N", .524189828, .94452817);
+        private City A = new City("A", 0.725228831, 0.028301616);
+        private City B = new City("B", 0.632613331, .879012261);
+        private City C = new City("C", .085878084, .352754499);
+        private City D = new City("D", .880437853, .852414005);
+        private City E = new City("E", .725231388, .382031121);
+        private City F = new City("F", .74550796, .32391051);
+      //  private City G = new City("G", .166612034, .10383117);
+      //  private City H = new City("H", .637364579, .962848092);
+      //  private City I = new City("I", .136222778, .908730558);
+      //  private City J = new City("J", .078296453, .248218346);
+      //  private City K = new City("K", .396853572, .962644387);
+      //  private City L = new City("L", .390728772, .703886694);
+      //  private City M = new City("M", .276887516, .354859612);
+      //  private City N = new City("N", .974681576, .344309411);
 
         // store them in the cityList with an initialization block
-        List<City> cityList = new List<City>();
+        public List<City> cityList = new List<City>();
 
         public void init()
         {
@@ -39,14 +39,14 @@ namespace Project_1
             cityList.Add(D);
             cityList.Add(E);
             cityList.Add(F);
-            cityList.Add(G);
-            cityList.Add(H);
-            cityList.Add(I);
-            cityList.Add(J);
-            cityList.Add(K);
-            cityList.Add(L);
-            cityList.Add(M);
-            cityList.Add(N);
+            //cityList.Add(G);
+            //cityList.Add(H);
+            //cityList.Add(I);
+            //cityList.Add(J);
+            //cityList.Add(K);
+            //cityList.Add(L);
+            //cityList.Add(M);
+            //cityList.Add(N);
         }
 	
 
