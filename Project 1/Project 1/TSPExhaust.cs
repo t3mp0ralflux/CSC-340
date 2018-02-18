@@ -47,12 +47,13 @@ namespace Project_1
         private static double shortestPossible = .05431844593233095 * 14;
         private static double dx = (longestPossible - shortestPossible) / 100;
         private static double[] bins = new double[100];
+      //  private static StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\ExhaustBins.txt", true);
 
         // code for creating permutations
         static int[] val;
         static int now = -1;
 
-        static int V = 6;
+        static int V = 14;  //change this to 14 after the initial run
         static int count = 0;
 
         //number of trips created
@@ -62,7 +63,7 @@ namespace Project_1
 
         public static void Main(String[] args)
         {
-
+            Logger.LogString = null;
             //Matrix mean = list[0];
 
             //for (int i = 1; i < list.Count(); i++)
@@ -127,7 +128,7 @@ namespace Project_1
                 }
             }
 
-            randomSearch();
+         //   randomSearch();
 
             double tripMean;
             double stdDev;
@@ -137,19 +138,28 @@ namespace Project_1
             stdDev = sumSqdDist - Math.Pow(sumOfDist, 2) / runs;
             stdDev = Math.Sqrt(stdDev / (double)(runs - 1));
 
-            Console.WriteLine("mean: " + tripMean + "\nstdDev: " + stdDev);
-            Console.WriteLine("longest trip route: ");
+            Logger.Out("mean: " + tripMean);
+            Logger.Out("stdDev: " + stdDev);
+            Logger.Out("longest trip route: ");
             longest.printTrip();
-            Console.WriteLine("longest trip length: " + longest.getTripLength());
-            Console.WriteLine("shortest trip: ");
+            Logger.Out("longest trip length: " + longest.getTripLength());
+            Logger.Out("shortest trip: ");
             shortest.printTrip();
-            Console.WriteLine("shortest trip length: " + shortest.getTripLength());
-
-            //System.out.println("\n\nduration: " + (endTime - startTime)/1000f + " seconds\n\n");
-
+            Logger.Out("shortest trip length: " + shortest.getTripLength());
+            
+            TimeSpan duration = endTime - startTime;
+            Logger.Out("\n\nduration: " + duration.Seconds + " seconds\n\n");
+            Console.ReadKey();
             for (int i = 0; i < bins.Length; i++)
-                Console.WriteLine(bins[i]);
+            {
+                Logger.Out(bins[i].ToString());
 
+            }
+            using (StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\ExhaustBins.txt", true))
+            {
+                file.WriteLine(Logger.LogString);
+            }
+            Console.ReadKey();
         }
 
         public static void getPerms()
@@ -164,7 +174,8 @@ public static void p(int k)
 {
     now++;
     val[k] = now;
-    if (now == V) handleP();
+    if (now == V)
+                handleP();
     for (int i = 1; i <= V; i++)
         if (val[i] == 0) p(i);
     now--;
@@ -220,5 +231,15 @@ public static void randomSearch()
         runs++;
     }
 }
+    }
+
+    public static class Logger
+    {
+        public static StringBuilder LogString = new StringBuilder();
+        public static void Out(string str)
+        {
+            Console.WriteLine(str);
+            LogString.Append(str).Append(Environment.NewLine);
+        }
     }
 }

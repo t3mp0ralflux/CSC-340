@@ -18,14 +18,14 @@ namespace Project_1
         private City D = new City("D", .880437853, .852414005);
         private City E = new City("E", .725231388, .382031121);
         private City F = new City("F", .74550796, .32391051);
-      //  private City G = new City("G", .166612034, .10383117);
-      //  private City H = new City("H", .637364579, .962848092);
-      //  private City I = new City("I", .136222778, .908730558);
-      //  private City J = new City("J", .078296453, .248218346);
-      //  private City K = new City("K", .396853572, .962644387);
-      //  private City L = new City("L", .390728772, .703886694);
-      //  private City M = new City("M", .276887516, .354859612);
-      //  private City N = new City("N", .974681576, .344309411);
+        private City G = new City("G", .166612034, .10383117);
+        private City H = new City("H", .637364579, .962848092);
+        private City I = new City("I", .136222778, .908730558);
+        private City J = new City("J", .078296453, .248218346);
+        private City K = new City("K", .396853572, .962644387);
+        private City L = new City("L", .390728772, .703886694);
+        private City M = new City("M", .276887516, .354859612);
+        private City N = new City("N", .974681576, .344309411);
 
         // store them in the cityList with an initialization block
         public List<City> cityList = new List<City>();
@@ -39,14 +39,14 @@ namespace Project_1
             cityList.Add(D);
             cityList.Add(E);
             cityList.Add(F);
-            //cityList.Add(G);
-            //cityList.Add(H);
-            //cityList.Add(I);
-            //cityList.Add(J);
-            //cityList.Add(K);
-            //cityList.Add(L);
-            //cityList.Add(M);
-            //cityList.Add(N);
+            cityList.Add(G);
+            cityList.Add(H);
+            cityList.Add(I);
+            cityList.Add(J);
+            cityList.Add(K);
+            cityList.Add(L);
+            cityList.Add(M);
+            cityList.Add(N);
         }
 	
 
@@ -86,6 +86,7 @@ namespace Project_1
     // constructor for creating a trip
     public Trip(int[] val, int V)
     {
+            init();
         for (int i = 1; i <= V; i++)
         {
             route.Add(cityList[val[i]]);
@@ -96,11 +97,12 @@ namespace Project_1
     // another constructor, less parameters.  used to create a random trip
     public Trip()
     {
-        cityList.Remove(dummy);
+            init();
+            cityList.Remove(dummy);
         cityList.TrimExcess();
         Random random = new Random();
         int val = 0;
-        int run = 14;
+        int run = 14;                        //change to 14 after initial run
         for (int i = 0; i < run; i++)
         {
             val = random.Next(cityList.Count());
@@ -116,10 +118,10 @@ namespace Project_1
         for (int i = 0; i < route.Count(); i++)
         {
             if (route[i] != null)
-                Console.WriteLine(route[i].getName() + " ");
+                Logger.Out(route[i].getName() + " ");
         }
         if (route[0] != null)
-            Console.WriteLine(route[0].getName());
+            Logger.Out(route[0].getName());
         Console.WriteLine();
     }
 
