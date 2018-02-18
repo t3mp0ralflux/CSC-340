@@ -14,6 +14,7 @@ namespace Project_1
         private static int longest;
         private static double maxTripLength;
         private static double minTripLength;
+        public static StringBuilder LogString = new StringBuilder();
 
         // variables relating to the workings of the algorithm
         private static double generation = 0;
@@ -33,36 +34,36 @@ namespace Project_1
         //for the saving of data
 
 
-        public static void main(String[] args)
-        {
-            Logger.LogString = null;
-            generatePop();
-            while (generation != heatDeath)
-            {
-                ageGeneration();
-            }
-            Logger.Out("fittest: ");
-            currentPopulation[fittest].printTrip();
-            Logger.Out("fit length: " + currentPopulation[fittest].getTripLength());
-            Logger.Out("least fit length: ");
-            currentPopulation[longest].printTrip();
-            Logger.Out("least fit length: " + currentPopulation[longest].getTripLength());
-            double mean = sum / numberOfSolns;
-            stdDev = stdDev - (Math.Pow(sum, 2) / numberOfSolns);
-            stdDev = Math.Sqrt(stdDev / (numberOfSolns - 1));
-            Logger.Out("Mean = " + mean);
-            Logger.Out("Standard Deviation: " + stdDev);
-            for (int i = 0; i < bins.Length; i++)
-            {
-                Logger.Out(bins[i].ToString());  
-            }
-            using (StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\ExhaustBins.txt", true))
-            {
-                file.WriteLine(Logger.LogString);
-            }
-            Console.ReadKey();
+        //public static void Main(String[] args)
+        //{
+        //    Logger.LogString = null;
+        //    generatePop();
+        //    while (generation != heatDeath)
+        //    {
+        //        ageGeneration();
+        //    }
+        //    Logger.Out("fittest: ");
+        //    currentPopulation[fittest].printTrip();
+        //    Logger.Out("fit length: " + currentPopulation[fittest].getTripLength());
+        //    Logger.Out("least fit length: ");
+        //    currentPopulation[longest].printTrip();
+        //    Logger.Out("least fit length: " + currentPopulation[longest].getTripLength());
+        //    double mean = sum / numberOfSolns;
+        //    stdDev = stdDev - (Math.Pow(sum, 2) / numberOfSolns);
+        //    stdDev = Math.Sqrt(stdDev / (numberOfSolns - 1));
+        //    Logger.Out("Mean = " + mean);
+        //    Logger.Out("Standard Deviation: " + stdDev);
+        //    for (int i = 0; i < bins.Length; i++)
+        //    {
+        //        Logger.Out(bins[i].ToString());  
+        //    }
+        //    using (StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\GeneticBins.txt", true))
+        //    {
+        //        file.WriteLine(Logger.LogString);
+        //    }
+        //    Console.ReadKey();
         
-        }
+        //}
 
         public static void generatePop()
         {
