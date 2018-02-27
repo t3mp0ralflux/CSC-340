@@ -61,75 +61,75 @@ namespace Project_1
         static double sumOfDist = 0;
         static double sumSqdDist = 0;
 
-        public static void Main(String[] args)
+        public static void main(String[] args)
         {
-            Logger.LogString = null;
-            //Matrix mean = list[0];
+            //    Logger.LogString = null;
+            //    //Matrix mean = list[0];
 
-            //for (int i = 1; i < list.Count(); i++)
-            //{
-            //    mean = mean.add(list[i]);
-            //}
+            //    //for (int i = 1; i < list.Count(); i++)
+            //    //{
+            //    //    mean = mean.add(list[i]);
+            //    //}
 
-            //mean = mean.multiply(1.0 / list.Count());
-            //mean.printMatrix();
+            //    //mean = mean.multiply(1.0 / list.Count());
+            //    //mean.printMatrix();
 
-            ////	Console.WriteLine("x=" + (x/count) + "y=" + (y/count));
+            //    ////	Console.WriteLine("x=" + (x/count) + "y=" + (y/count));
 
-            //// covariance matrix calculation
-            //Matrix cov1;
+            //    //// covariance matrix calculation
+            //    //Matrix cov1;
 
-            //cov1 = list[0].subtract(mean);
-            //cov1 = cov1.multiply(cov1.transpose());
+            //    //cov1 = list[0].subtract(mean);
+            //    //cov1 = cov1.multiply(cov1.transpose());
 
-            //for (int i = 1; i < list.Count(); i++)
-            //{
-            //    Matrix temp = list[i];
-            //    temp = temp.subtract(mean);
-            //    temp = temp.multiply(temp.transpose());
-            //    cov1 = cov1.add(temp);
-            //}
+            //    //for (int i = 1; i < list.Count(); i++)
+            //    //{
+            //    //    Matrix temp = list[i];
+            //    //    temp = temp.subtract(mean);
+            //    //    temp = temp.multiply(temp.transpose());
+            //    //    cov1 = cov1.add(temp);
+            //    //}
 
-            //cov1 = cov1.multiply(1.0 / list.Count());
-            //cov1.printMatrix();
+            //    //cov1 = cov1.multiply(1.0 / list.Count());
+            //    //cov1.printMatrix();
 
-            //Console.WriteLine("\n\n");
+            //    //Console.WriteLine("\n\n");
 
-            //Console.WriteLine("trace of covariance matrix is: " + Project2.trace(cov1));
-            //Console.WriteLine("determinant of cov matrix is: " + cov1.findDeterminant());
+            //    //Console.WriteLine("trace of covariance matrix is: " + Project2.trace(cov1));
+            //    //Console.WriteLine("determinant of cov matrix is: " + cov1.findDeterminant());
 
-            //Console.WriteLine("\n\n\n\n\n\n");
+            //    //Console.WriteLine("\n\n\n\n\n\n");
 
-            //remove any garbage from the bin counter
-            for (int i = 0; i < bins.Length; i++)
-                bins[i] = 0;
+            //    //remove any garbage from the bin counter
+            //    for (int i = 0; i < bins.Length; i++)
+            //        bins[i] = 0;
 
 
-            // used for exhaustive search
+            //    // used for exhaustive search
             DateTime startTime = DateTime.Now;
-            getPerms();
+            //    getPerms();
+            //    DateTime endTime = DateTime.Now;
+
+
+            //    /* this code was used to find the shortest and longest distance between cities
+            //       no reason to run it after finding the answers */
+            //       double furthestDistance = 0;
+            //       double shortestDistance = 1000000; //arbitrary large value
+
+            //    for (int i = 0; i < shortest.cityList.Count(); i++)
+            //    {
+            //        for (int j = 0; j < shortest.cityList.Count(); j++)
+            //        {
+            //            double curr = shortest.cityDistance(shortest.cityList[i], shortest.cityList[j]);
+            //            if (curr > furthestDistance && i != j)
+            //                furthestDistance = curr;
+            //            if (curr < shortestDistance && i != j)
+            //                shortestDistance = curr;
+            //        }
+            //    }
+
+            randomSearch();
             DateTime endTime = DateTime.Now;
-
-
-            /* this code was used to find the shortest and longest distance between cities
-               no reason to run it after finding the answers */
-               double furthestDistance = 0;
-               double shortestDistance = 1000000; //arbitrary large value
-
-            for (int i = 0; i < shortest.cityList.Count(); i++)
-            {
-                for (int j = 0; j < shortest.cityList.Count(); j++)
-                {
-                    double curr = shortest.cityDistance(shortest.cityList[i], shortest.cityList[j]);
-                    if (curr > furthestDistance && i != j)
-                        furthestDistance = curr;
-                    if (curr < shortestDistance && i != j)
-                        shortestDistance = curr;
-                }
-            }
-
-         //   randomSearch();
-
             double tripMean;
             double stdDev;
 
@@ -146,7 +146,7 @@ namespace Project_1
             Logger.Out("shortest trip: ");
             shortest.printTrip();
             Logger.Out("shortest trip length: " + shortest.getTripLength());
-            
+
             TimeSpan duration = endTime - startTime;
             Logger.Out("\n\nduration: " + duration.Seconds + " seconds\n\n");
             Console.ReadKey();
@@ -154,12 +154,13 @@ namespace Project_1
             {
                 Logger.Out(bins[i].ToString());
 
+                //    }
+                //    using (StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\ExhaustBins.txt", true))
+                //    {
+                //        file.WriteLine(Logger.LogString);
+                //    }
+                Console.ReadKey();
             }
-            using (StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\ExhaustBins.txt", true))
-            {
-                file.WriteLine(Logger.LogString);
-            }
-            Console.ReadKey();
         }
 
         public static void getPerms()
@@ -238,6 +239,7 @@ public static void randomSearch()
         public static StringBuilder LogString = new StringBuilder();
         public static void Out(string str)
         {
+            StringBuilder LogString = new StringBuilder();
             Console.WriteLine(str);
             LogString.Append(str).Append(Environment.NewLine);
         }

@@ -14,6 +14,7 @@ namespace Project_1
         private static int longest;
         private static double maxTripLength;
         private static double minTripLength;
+        public static StringBuilder LogString = new StringBuilder();
 
         // variables relating to the workings of the algorithm
         private static double generation = 0;
@@ -33,7 +34,7 @@ namespace Project_1
         //for the saving of data
 
 
-        public static void main(String[] args)
+        public static void Main(String[] args)
         {
             Logger.LogString = null;
             generatePop();
@@ -54,14 +55,14 @@ namespace Project_1
             Logger.Out("Standard Deviation: " + stdDev);
             for (int i = 0; i < bins.Length; i++)
             {
-                Logger.Out(bins[i].ToString());  
+                Logger.Out(bins[i].ToString());
             }
-            using (StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\ExhaustBins.txt", true))
+            using (StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\GeneticBins.txt", true))
             {
                 file.WriteLine(Logger.LogString);
             }
             Console.ReadKey();
-        
+
         }
 
         public static void generatePop()

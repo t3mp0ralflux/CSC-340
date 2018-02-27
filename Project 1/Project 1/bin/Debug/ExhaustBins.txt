@@ -1,0 +1,41 @@
+mean: 8.29687631888996
+stdDev: 0.844459936872625
+longest trip route:
+A
+K
+F
+I
+E
+M
+H
+G
+B
+J
+D
+C
+N
+L
+A
+
+longest trip length: 11.5038271479076
+shortest trip:
+A
+F
+E
+N
+D
+B
+H
+K
+I
+L
+M
+C
+J
+G
+A
+
+shortest trip length: 3.68940712234167
+
+
+duration: 85.6 hours
