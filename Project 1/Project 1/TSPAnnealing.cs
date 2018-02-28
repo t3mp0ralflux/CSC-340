@@ -25,7 +25,11 @@ namespace Project_1
         private static double stdDev = 0;
         private static double numberOfSolns = 0;
 
+<<<<<<< HEAD
         public static void main(String[] args)
+=======
+        public static void Main(String[] args)
+>>>>>>> 000ffcbccd1ad8a7ac094e6475a2bc535f0074d0
         {
             // some initiliazion below
             DateTime startTime = DateTime.Now;

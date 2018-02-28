@@ -61,6 +61,7 @@ namespace Project_1
         static double sumOfDist = 0;
         static double sumSqdDist = 0;
 
+<<<<<<< HEAD
         public static void main(String[] args)
         {
             //    Logger.LogString = null;
@@ -132,12 +133,86 @@ namespace Project_1
             DateTime endTime = DateTime.Now;
             double tripMean;
             double stdDev;
+=======
+        //public static void Main(String[] args)
+        //{
+        //    Logger.LogString = null;
+        //    //Matrix mean = list[0];
 
-            tripMean = sumOfDist / runs;
+        //    //for (int i = 1; i < list.Count(); i++)
+        //    //{
+        //    //    mean = mean.add(list[i]);
+        //    //}
 
-            stdDev = sumSqdDist - Math.Pow(sumOfDist, 2) / runs;
-            stdDev = Math.Sqrt(stdDev / (double)(runs - 1));
+        //    //mean = mean.multiply(1.0 / list.Count());
+        //    //mean.printMatrix();
 
+        //    ////	Console.WriteLine("x=" + (x/count) + "y=" + (y/count));
+
+        //    //// covariance matrix calculation
+        //    //Matrix cov1;
+
+        //    //cov1 = list[0].subtract(mean);
+        //    //cov1 = cov1.multiply(cov1.transpose());
+
+        //    //for (int i = 1; i < list.Count(); i++)
+        //    //{
+        //    //    Matrix temp = list[i];
+        //    //    temp = temp.subtract(mean);
+        //    //    temp = temp.multiply(temp.transpose());
+        //    //    cov1 = cov1.add(temp);
+        //    //}
+
+        //    //cov1 = cov1.multiply(1.0 / list.Count());
+        //    //cov1.printMatrix();
+
+        //    //Console.WriteLine("\n\n");
+
+        //    //Console.WriteLine("trace of covariance matrix is: " + Project2.trace(cov1));
+        //    //Console.WriteLine("determinant of cov matrix is: " + cov1.findDeterminant());
+
+        //    //Console.WriteLine("\n\n\n\n\n\n");
+
+        //    //remove any garbage from the bin counter
+        //    for (int i = 0; i < bins.Length; i++)
+        //        bins[i] = 0;
+
+
+        //    // used for exhaustive search
+        //    DateTime startTime = DateTime.Now;
+        //    getPerms();
+        //    DateTime endTime = DateTime.Now;
+
+
+        //    /* this code was used to find the shortest and longest distance between cities
+        //       no reason to run it after finding the answers */
+        //       double furthestDistance = 0;
+        //       double shortestDistance = 1000000; //arbitrary large value
+
+        //    for (int i = 0; i < shortest.cityList.Count(); i++)
+        //    {
+        //        for (int j = 0; j < shortest.cityList.Count(); j++)
+        //        {
+        //            double curr = shortest.cityDistance(shortest.cityList[i], shortest.cityList[j]);
+        //            if (curr > furthestDistance && i != j)
+        //                furthestDistance = curr;
+        //            if (curr < shortestDistance && i != j)
+        //                shortestDistance = curr;
+        //        }
+        //    }
+
+        // //   randomSearch();
+
+        //    double tripMean;
+        //    double stdDev;
+>>>>>>> 000ffcbccd1ad8a7ac094e6475a2bc535f0074d0
+
+        //    tripMean = sumOfDist / runs;
+
+        //    stdDev = sumSqdDist - Math.Pow(sumOfDist, 2) / runs;
+        //    stdDev = Math.Sqrt(stdDev / (double)(runs - 1));
+
+<<<<<<< HEAD
             Logger.Out("mean: " + tripMean);
             Logger.Out("stdDev: " + stdDev);
             Logger.Out("longest trip route: ");
@@ -162,6 +237,31 @@ namespace Project_1
                 Console.ReadKey();
             }
         }
+=======
+        //    Logger.Out("mean: " + tripMean);
+        //    Logger.Out("stdDev: " + stdDev);
+        //    Logger.Out("longest trip route: ");
+        //    longest.printTrip();
+        //    Logger.Out("longest trip length: " + longest.getTripLength());
+        //    Logger.Out("shortest trip: ");
+        //    shortest.printTrip();
+        //    Logger.Out("shortest trip length: " + shortest.getTripLength());
+            
+        //    TimeSpan duration = endTime - startTime;
+        //    Logger.Out("\n\nduration: " + duration.Seconds + " seconds\n\n");
+        //    Console.ReadKey();
+        //    for (int i = 0; i < bins.Length; i++)
+        //    {
+        //        Logger.Out(bins[i].ToString());
+
+        //    }
+        //    using (StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\ExhaustBins.txt", true))
+        //    {
+        //        file.WriteLine(Logger.LogString);
+        //    }
+        //    Console.ReadKey();
+        //}
+>>>>>>> 000ffcbccd1ad8a7ac094e6475a2bc535f0074d0
 
         public static void getPerms()
 {

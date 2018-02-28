@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 mean: 8.31481393796611
 stdDev: 0.834804125558046
 longest trip route:
@@ -36,6 +37,19 @@ D
 A
 
 shortest trip length: 5.52557106469907
+=======
+Mean: 
+7.703712819595666
+
+Minimum trip distance: 
+3.858677978295467
+
+Maximum trip distance: 
+10.843827136883288
+
+Standard deviation of solutions: 
+0.8204159259159282
+>>>>>>> 000ffcbccd1ad8a7ac094e6475a2bc535f0074d0
 
 Histogram data: 
 [    1     0     0     2     7    10     6    14    16    19    42    44

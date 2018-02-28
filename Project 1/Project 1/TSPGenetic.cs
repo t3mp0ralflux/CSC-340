@@ -34,6 +34,7 @@ namespace Project_1
         //for the saving of data
 
 
+<<<<<<< HEAD
         public static void Main(String[] args)
         {
             Logger.LogString = null;
@@ -64,6 +65,38 @@ namespace Project_1
             Console.ReadKey();
 
         }
+=======
+        //public static void Main(String[] args)
+        //{
+        //    Logger.LogString = null;
+        //    generatePop();
+        //    while (generation != heatDeath)
+        //    {
+        //        ageGeneration();
+        //    }
+        //    Logger.Out("fittest: ");
+        //    currentPopulation[fittest].printTrip();
+        //    Logger.Out("fit length: " + currentPopulation[fittest].getTripLength());
+        //    Logger.Out("least fit length: ");
+        //    currentPopulation[longest].printTrip();
+        //    Logger.Out("least fit length: " + currentPopulation[longest].getTripLength());
+        //    double mean = sum / numberOfSolns;
+        //    stdDev = stdDev - (Math.Pow(sum, 2) / numberOfSolns);
+        //    stdDev = Math.Sqrt(stdDev / (numberOfSolns - 1));
+        //    Logger.Out("Mean = " + mean);
+        //    Logger.Out("Standard Deviation: " + stdDev);
+        //    for (int i = 0; i < bins.Length; i++)
+        //    {
+        //        Logger.Out(bins[i].ToString());  
+        //    }
+        //    using (StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\GeneticBins.txt", true))
+        //    {
+        //        file.WriteLine(Logger.LogString);
+        //    }
+        //    Console.ReadKey();
+        
+        //}
+>>>>>>> 000ffcbccd1ad8a7ac094e6475a2bc535f0074d0
 
         public static void generatePop()
         {
