@@ -61,9 +61,8 @@ namespace Project_1
         static double sumOfDist = 0;
         static double sumSqdDist = 0;
 
-<<<<<<< HEAD
-        public static void main(String[] args)
-        {
+ //       public static void main(String[] args)
+//        {
             //    Logger.LogString = null;
             //    //Matrix mean = list[0];
 
@@ -107,7 +106,7 @@ namespace Project_1
 
 
             //    // used for exhaustive search
-            DateTime startTime = DateTime.Now;
+   //         DateTime startTime = DateTime.Now;
             //    getPerms();
             //    DateTime endTime = DateTime.Now;
 
@@ -129,11 +128,11 @@ namespace Project_1
             //        }
             //    }
 
-            randomSearch();
-            DateTime endTime = DateTime.Now;
-            double tripMean;
-            double stdDev;
-=======
+            //randomSearch();
+            //DateTime endTime = DateTime.Now;
+            //double tripMean;
+            //double stdDev;
+
         //public static void Main(String[] args)
         //{
         //    Logger.LogString = null;
@@ -205,39 +204,39 @@ namespace Project_1
 
         //    double tripMean;
         //    double stdDev;
->>>>>>> 000ffcbccd1ad8a7ac094e6475a2bc535f0074d0
+
 
         //    tripMean = sumOfDist / runs;
 
         //    stdDev = sumSqdDist - Math.Pow(sumOfDist, 2) / runs;
         //    stdDev = Math.Sqrt(stdDev / (double)(runs - 1));
 
-<<<<<<< HEAD
-            Logger.Out("mean: " + tripMean);
-            Logger.Out("stdDev: " + stdDev);
-            Logger.Out("longest trip route: ");
-            longest.printTrip();
-            Logger.Out("longest trip length: " + longest.getTripLength());
-            Logger.Out("shortest trip: ");
-            shortest.printTrip();
-            Logger.Out("shortest trip length: " + shortest.getTripLength());
 
-            TimeSpan duration = endTime - startTime;
-            Logger.Out("\n\nduration: " + duration.Seconds + " seconds\n\n");
-            Console.ReadKey();
-            for (int i = 0; i < bins.Length; i++)
-            {
-                Logger.Out(bins[i].ToString());
+        //    Logger.Out("mean: " + tripMean);
+        //    Logger.Out("stdDev: " + stdDev);
+        //    Logger.Out("longest trip route: ");
+        //    longest.printTrip();
+        //    Logger.Out("longest trip length: " + longest.getTripLength());
+        //    Logger.Out("shortest trip: ");
+        //    shortest.printTrip();
+        //    Logger.Out("shortest trip length: " + shortest.getTripLength());
 
-                //    }
-                //    using (StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\ExhaustBins.txt", true))
-                //    {
-                //        file.WriteLine(Logger.LogString);
-                //    }
-                Console.ReadKey();
-            }
-        }
-=======
+        //    TimeSpan duration = endTime - startTime;
+        //    Logger.Out("\n\nduration: " + duration.Seconds + " seconds\n\n");
+        //    Console.ReadKey();
+        //    for (int i = 0; i < bins.Length; i++)
+        //    {
+        //        Logger.Out(bins[i].ToString());
+
+        //        //    }
+        //        //    using (StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory().ToString() + "\\ExhaustBins.txt", true))
+        //        //    {
+        //        //        file.WriteLine(Logger.LogString);
+        //        //    }
+        //        Console.ReadKey();
+        //    }
+        //}
+
         //    Logger.Out("mean: " + tripMean);
         //    Logger.Out("stdDev: " + stdDev);
         //    Logger.Out("longest trip route: ");
@@ -261,7 +260,6 @@ namespace Project_1
         //    }
         //    Console.ReadKey();
         //}
->>>>>>> 000ffcbccd1ad8a7ac094e6475a2bc535f0074d0
 
         public static void getPerms()
 {

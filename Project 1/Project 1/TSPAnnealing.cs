@@ -25,85 +25,82 @@ namespace Project_1
         private static double stdDev = 0;
         private static double numberOfSolns = 0;
 
-<<<<<<< HEAD
-        public static void main(String[] args)
-=======
-        public static void Main(String[] args)
->>>>>>> 000ffcbccd1ad8a7ac094e6475a2bc535f0074d0
-        {
-            // some initiliazion below
-            DateTime startTime = DateTime.Now;
-            temp = startTemp;
-            // best and worst are set to route, which is the first trip created
-            best = route;
-            worst = route;
-            // just for information it prints our starting route and its length
-            Logger.Out("This is the initial state of the trip");
-            best.printTrip();
-            Logger.Out(best.getTripLength().ToString());
+        //public static void Main(String[] args)
 
-            sum += route.getTripLength();
-            stdDev += (route.getTripLength() * route.getTripLength());
-            int binIndex = (int)((route.getTripLength() - shortestPossible) / dx);
-            bins[binIndex]++;
-            numberOfSolns++;
+        //{
+        //    // some initiliazion below
+        //    DateTime startTime = DateTime.Now;
+        //    temp = startTemp;
+        //    // best and worst are set to route, which is the first trip created
+        //    best = route;
+        //    worst = route;
+        //    // just for information it prints our starting route and its length
+        //    Logger.Out("This is the initial state of the trip");
+        //    best.printTrip();
+        //    Logger.Out(best.getTripLength().ToString());
 
-            // until the temperature reaches a certain point OR a sufficient solution is found
-            while (temp > finalTemp && best.getTripLength() > 3.3f)
-            {
-                Trip newRoute = route;
-                Random random = new Random();
+        //    sum += route.getTripLength();
+        //    stdDev += (route.getTripLength() * route.getTripLength());
+        //    int binIndex = (int)((route.getTripLength() - shortestPossible) / dx);
+        //    bins[binIndex]++;
+        //    numberOfSolns++;
 
-                int swap1 = random.Next(newRoute.route.Count());
-                int swap2 = random.Next(newRoute.route.Count());
+        //    // until the temperature reaches a certain point OR a sufficient solution is found
+        //    while (temp > finalTemp && best.getTripLength() > 3.3f)
+        //    {
+        //        Trip newRoute = route;
+        //        Random random = new Random();
 
-                // if they're the same, make a new swap1 index
-                while (swap1 == swap2)
-                    swap1 = random.Next(newRoute.route.Count());
+        //        int swap1 = random.Next(newRoute.route.Count());
+        //        int swap2 = random.Next(newRoute.route.Count());
 
-                newRoute.swapCities(swap1, swap2);
+        //        // if they're the same, make a new swap1 index
+        //        while (swap1 == swap2)
+        //            swap1 = random.Next(newRoute.route.Count());
 
-                double delta = newRoute.getTripLength() - route.getTripLength();
-                double val = k * temp;
+        //        newRoute.swapCities(swap1, swap2);
 
-                sum += newRoute.getTripLength();
-                stdDev += (newRoute.getTripLength() * newRoute.getTripLength());
-                binIndex = (int)((newRoute.getTripLength() - shortestPossible) / dx);
-                bins[binIndex]++;
-                numberOfSolns++;
+        //        double delta = newRoute.getTripLength() - route.getTripLength();
+        //        double val = k * temp;
 
-                if (delta < 0)
-                {
-                    route = newRoute;
-                }
+        //        sum += newRoute.getTripLength();
+        //        stdDev += (newRoute.getTripLength() * newRoute.getTripLength());
+        //        binIndex = (int)((newRoute.getTripLength() - shortestPossible) / dx);
+        //        bins[binIndex]++;
+        //        numberOfSolns++;
 
-                else if ((delta >= 0 && ((1 / val) * Math.Exp(-delta / (val))) > random.Next() / val))
-                {
-                    route = newRoute;
-                }
+        //        if (delta < 0)
+        //        {
+        //            route = newRoute;
+        //        }
 
-                if (best.getTripLength() > route.getTripLength())
-                    best = route;
-                if (worst.getTripLength() < route.getTripLength())
-                    worst = route;
+        //        else if ((delta >= 0 && ((1 / val) * Math.Exp(-delta / (val))) > random.Next() / val))
+        //        {
+        //            route = newRoute;
+        //        }
 
-                TimeSpan duration = DateTime.Now - startTime;
-                //temp = temp / (1 + (Convert.ToDouble(duration.Milliseconds) / 1000));
-                temp *= .99999;
-            }
-            best.printTrip();
-            Logger.Out(best.getTripLength().ToString());
-            worst.printTrip();
-            Logger.Out(worst.getTripLength().ToString());
-            double mean = sum / numberOfSolns;
-            stdDev = stdDev - (Math.Pow(sum, 2) / numberOfSolns);
-            stdDev = Math.Sqrt(stdDev / (numberOfSolns - 1));
-            Logger.Out("Mean = " + mean + "\nStandard Deviation: " + stdDev);
-            for (int i = 0; i < bins.Length; i++)
-            {
-                Logger.Out(bins[i].ToString());
-            }
-            Console.ReadKey();
-        }
+        //        if (best.getTripLength() > route.getTripLength())
+        //            best = route;
+        //        if (worst.getTripLength() < route.getTripLength())
+        //            worst = route;
+
+        //        TimeSpan duration = DateTime.Now - startTime;
+        //        //temp = temp / (1 + (Convert.ToDouble(duration.Milliseconds) / 1000));
+        //        temp *= .99999;
+        //    }
+        //    best.printTrip();
+        //    Logger.Out(best.getTripLength().ToString());
+        //    worst.printTrip();
+        //    Logger.Out(worst.getTripLength().ToString());
+        //    double mean = sum / numberOfSolns;
+        //    stdDev = stdDev - (Math.Pow(sum, 2) / numberOfSolns);
+        //    stdDev = Math.Sqrt(stdDev / (numberOfSolns - 1));
+        //    Logger.Out("Mean = " + mean + "\nStandard Deviation: " + stdDev);
+        //    for (int i = 0; i < bins.Length; i++)
+        //    {
+        //        Logger.Out(bins[i].ToString());
+        //    }
+        //    Console.ReadKey();
+        //}
     }
 }
