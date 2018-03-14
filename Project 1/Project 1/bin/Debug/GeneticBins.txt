@@ -1,73 +1,73 @@
 fittest:
-G
-J
-H
+I
+M
+F
+F
+F
+N
+D
+D
+D
 B
-B
-B
-B
-B
-B
-H
+L
+L
 K
 I
 I
-I
-G
 
-fit length: 2.55666128157616
+fit length: 2.86079780930672
 least fit length:
+L
 I
+F
+F
+F
+N
+D
+D
 B
+D
 K
-B
-B
-B
-B
-E
-H
-B
-A
-G
-I
-I
-I
+L
+C
+M
+L
 
-least fit length: 4.39943086194327
-Mean = 5.82543521099815
-Standard Deviation: 1.46667362809607
+least fit length: 4.19455160575869
+Mean = 5.75809135905963
+Standard Deviation: 1.38966308235356
 0
 0
 0
 0
 0
 0
-12
+0
+1
+3
+39
+5
+89
+54
+97
+87
+9
+116
+48
+138
+48
 2
-15
-13
-6
-7
+50
+48
+48
+0
+2
+2
+0
 46
-26
-32
-77
-58
-29
-2
-16
-2
-65
-34
-35
-15
 0
-15
-15
-0
-0
-0
-0
+1
+1
 0
 0
 0
@@ -181,4 +181,5 @@ Histogram data:
 =======
 5.49023451630992
 >>>>>>> 000ffcbccd1ad8a7ac094e6475a2bc535f0074d0
+
 
