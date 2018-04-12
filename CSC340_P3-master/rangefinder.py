@@ -107,8 +107,8 @@ def main():
     filtered_response = create_filter(response, 8)
     final = smooth_filter(fcc_final, filtered_response)
     max_final = max(final)
-    #for i in final:
-     #   print(i / max_final)
+    for i in final:
+        print(i/max_final)
 
 
 main()

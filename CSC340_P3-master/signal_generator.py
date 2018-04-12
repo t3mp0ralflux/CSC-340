@@ -245,14 +245,14 @@ def call_signals():
             # else:
                 # fs_samples3.append(commonsignal1(param, int(S)))
                 # gs_samples3.append(commonsignal2(param, int(S)))
-	for i in range (0,512):
-		param = i/ samples
-		fs_samples1.append(commonsignal1(param, int(3)))
-		gs_samples1.append(commonsignal2(param, int(3)))
-		fs_samples2.append(commonsignal1(param, int(10)))
-		gs_samples2.append(commonsignal2(param, int(10)))
-		fs_samples2.append(commonsignal1(param, int(50)))
-		gs_samples2.append(commonsignal2(param, int(50)))
+    for i in range (0,512):
+        param = i/ samples
+        fs_samples1.append(commonsignal1(param, int(3)))
+        gs_samples1.append(commonsignal2(param, int(3)))
+        fs_samples2.append(commonsignal1(param, int(10)))
+        gs_samples2.append(commonsignal2(param, int(10)))
+        fs_samples2.append(commonsignal1(param, int(50)))
+        gs_samples2.append(commonsignal2(param, int(50)))
 
     # Write results of signal generation for Fs(t) function
     with open("fs_signal_results.txt", 'w') as fs_results:

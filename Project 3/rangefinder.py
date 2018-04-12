@@ -9,13 +9,13 @@ def get_data():
     pulse = []
     response = []
     temp = []
-    with open("rangeData.txt", 'r') as file:
+    with open("rangeTestDataSpring2018.txt", 'r') as file:
         for i in file.readlines():
             line = i.strip()
             temp.append(line)
-    for i in range(1, 146):
+    for i in range(1, 53):
         pulse.append(float(temp[i]))
-    for i in range(147, 1171):
+    for i in range(55, 1079):
         response.append(float(temp[i]))
 
     return pulse, response
@@ -50,10 +50,10 @@ def find_distance(fcc_final):
     # print the index at which the pulse signal was detected in the response signal
     #print(d)
 
-    T = 1 / 200000
-    T *= d
-    T += 0.01
-    r = 1500
+    T = 1 / 50000 #sampling rate
+    T *= d      #Time * distance
+    T += .02   # shut off in ms
+    r = 1500    #vel of sound in seawater
     d_dist = r * T
     d_dist /= 2
 
@@ -93,7 +93,7 @@ def smooth_filter(og_signal, filter_signal):
 
 def main():
     pulse, response = get_data()
-    for i in range(0, 879):
+    for i in range(0, 972):
         pulse.append(0)
 
     pulse_fft = fourier.fft(pulse, 1, 1024)
@@ -104,11 +104,11 @@ def main():
     fcc_final = fourier.fft(corr_list, -1, 1024)
 
     find_distance(fcc_final)
-    filtered_response = create_filter(response, 8)
+    filtered_response = create_filter(response, 6)
     final = smooth_filter(fcc_final, filtered_response)
     max_final = max(final)
     #for i in final:
-     #   print(i / max_final)
+    #   print(i / max_final)
 
 
 main()
