@@ -52,7 +52,7 @@ def find_distance(fcc_final):
 
     T = 1 / 50000 #sampling rate
     T *= d      #Time * distance
-    T += .02   # shut off in ms
+    T += .002   # shut off in ms
     r = 1500    #vel of sound in seawater
     d_dist = r * T
     d_dist /= 2
